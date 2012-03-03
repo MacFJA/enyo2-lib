@@ -1,8 +1,15 @@
 /**
  * Enyo UI
- * @see enyojs.com
+ * @see http://enyojs.com
  * @name onyx
  * @namespace
+ */
+
+/**
+ * Onyx UI class for input
+ * @see http://enyojs.com
+ * @name onyx.Input
+ * @class
  */
 
 /**
@@ -10,6 +17,7 @@
  * @class
  * @requires onyx.Input
  * @extends onyx.Input
+ * @version 1.1 (03/03/2012)
  */
 enyo.kind({
 	/** @lends onyx.TextArea */
@@ -30,7 +38,15 @@ enyo.kind({
 		 * @type Number
 		 * @default 2
 		 */
-		minRows: 2
+		minRows: 2,
+		
+		/**
+		 * The maximum number of row to display (use getter/setter).<br />
+		 * Set to <tt><b>null</b></tt> to don't limit.
+		 * @type Number
+		 * @default null
+		 */
+		maxRows: null
 	},
 
 	events: {
@@ -85,7 +101,10 @@ enyo.kind({
 
 		var node = this.node;
 
-		while(node.clientHeight < node.scrollHeight) {
+		while(
+			node.clientHeight < node.scrollHeight &&
+			(!this.maxRows || this.rowsCount < this.maxRows)
+		) {
 			this.rowsCount++;
 			this.setAttribute("rows", this.rowsCount);
 		}
@@ -100,6 +119,15 @@ enyo.kind({
 	minRowsChanged: function() {
 		if(this.minRows < 1)
 			{ this.minRows = 1; }
+		this.doResize();
+	},
+	/**
+	 * Handler dor <q>maxRows</1> value change
+	 * @private
+	 */
+	maxRowsChanged: function() {
+		if(this.maxRows < this.minRows)
+			{ this.maxRows = this.minRows; }
 		this.doResize();
 	},
 	/**
