@@ -10,7 +10,7 @@ enyo.kind({
 	 * Translation Module for Enyo
 	 * @name enyo.localize
 	 * @namespace
- 	 * @version 2 (02/03/2012)
+ 	 * @version 2.1 (03/03/2012)
 	 * @author MacFJA
 	 * @type Object
 	 */
@@ -64,9 +64,9 @@ enyo.kind({
 				this.destination = language.toLowerCase();
 				return true;
 			}
-			else if(language.length == 5 && language.indexOf('-') > -1) {
+			else if(language.length == 5 && language.indexOf('-') == 2) {
 				//Standard navigator format (i.e. "en-us", "en-uk", "fr-fr", "fr-ca", "fr-be", etc.)
-				this.destination = language.substr(0,2)+"_"+language.substr(3,3).toUpperCase();//set format from "xx-yy" to "xx_YY"
+				this.destination = language.substr(0,2)+"_"+language.substr(3,2).toUpperCase();//set format from "xx-yy" to "xx_YY"
 				return true;
 			}
 			else {//Unrecognized format
@@ -79,7 +79,7 @@ enyo.kind({
 		 * @param {Object[]} newList The list of new translation
 		 */
 		addArray: function(newList) {
-			for (var tour=0; tour < newList.length; tour++) {
+			for (var tour=0, size=newList.length; tour < size; tour++) {
 				this.addLocalization(newList[tour]);
 			};
 		},
@@ -104,7 +104,7 @@ enyo.kind({
 			var re = /\{\$\w+\|.[^}]+\}/g;//RegEx search for {$something|another thing}
 			var search = re.exec(data);
 
-			if(search == null)//Plural don't exist
+			if(!search)//Plural don't exist
 				{ return data; }
 
 			var plural = search[0];
@@ -119,36 +119,36 @@ enyo.kind({
 			list[list.length-1] = item.substring(0, item.length-1);
 
 			//Get the context value (set to "*" if no context found)
-			if(context == undefined || context.length < 1)
+			if(!context || !context.length)
 				{ var cValue = "*"; }
 			else
-				{ var cValue = (context[list[0].substring(1)] == undefined)?"*":context[list[0].substring(1)]; }
+				{ var cValue = (!context[list[0].substring(1)])?"*":context[list[0].substring(1)]; }
 
 
 			//Extract the number
-			for (var tour=1; tour < list.length; tour++) {
+			for (var tour=1, size=list.length; tour < size; tour++) {
 				var infos = list[tour].split(":");
 				list[tour] = {"id": infos[0], "text": infos[1]};
 			};
 
 			//Replace $obj by {$obj} in all fields
 			var re = new RegExp("\\"+list[0], "g");
-			for (var tour=1; tour < list.length; tour++) {
+			for (var tour=1, size=list.length; tour < size; tour++) {
 				var item = list[tour].text;
 				list[tour].text = item.replace(re, "{"+list[0]+"}");
 			};
 
 			//Select the good choice
 			var choice = "";
-			for (var tour=1; tour < list.length; tour++) {
+			for (var tour=1, size=list.length; tour < size; tour++) {
 				if(list[tour].id == cValue) {
 					choice = list[tour].text;
 				}
 			};
 
-			if(choice == "") {
+			if(!choice) {
 				//If we are here, then search for "*" choice
-				for (var tour=1; tour < list.length; tour++) {
+				for (var tour=1, size=list.length; tour < size; tour++) {
 					if(list[tour].id == "*") {
 						choice = list[tour].text;
 					}
@@ -171,16 +171,19 @@ enyo.kind({
  * @requires <tt><strong>enyo.localize</strong></tt>
  */
 enyo.T = function(source, context) {
-	var longSource = enyo.localize.source;//Long language format ("xx_YY")
-	var shortSource = longSource.substr(0,2);//Short language format ("xx")
+	var longSource = enyo.localize.source,//Long language format ("xx_YY")
+		shortSource = longSource.substr(0,2),//Short language format ("xx")
 	
-	var longDest = enyo.localize.destination;//Long language format ("xx_YY")
-	var shortDest = longDest.substr(0,2);//Short language format ("xx")
+		longDest = enyo.localize.destination,//Long language format ("xx_YY")
+		shortDest = longDest.substr(0,2),//Short language format ("xx")
 	
-	var resultat = source;
+		resultat = source,
+		tour = 0,
+		list = enyo.localize.getList(),
+		size = list.length;
 	
-	for(var tour in enyo.localize.getList()) {
-		var item = enyo.localize.getList()[tour];
+	for(;tour < size; tour++) {
+		var item = list[tour];
 		//Search source translation
 		if(
 			source == item[longSource] ||
@@ -188,13 +191,13 @@ enyo.T = function(source, context) {
 			source == item['key']
 		) {//In Long or short format or special key
 			//Select the good translation
-			if(item[longDest] != undefined) {//in long language if exist
+			if(item[longDest]) {//in long language if exist
 				resultat = item[longDest];
 			}
-			else if(item[shortDest] != undefined) {//in short if exist and long don't
+			else if(item[shortDest]) {//in short if exist and long don't
 				resultat = item[shortDest];
 			}
-			else if(item['default'] != undefined){//No long or short format language, the language don't have translation
+			else if(item['default']){//No long or short format language, the language don't have translation
 				resultat = item['default'];
 			}
 			if(resultat != source)//If resultat different than source, the translation have been found
