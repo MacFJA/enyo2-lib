@@ -28,7 +28,7 @@ enyo.kind({
 		 * @default "fr_FR"
 		*/
 		destination: "fr_FR",
-	
+
 		/**
 		 * Internal attribute that contains all translations
 		 * @private
@@ -44,7 +44,7 @@ enyo.kind({
 		getList : function() {
 			return this.list;
 		},
-	
+
 		/**
 		 * Get user language from the navigator (for destination language)
 		 * @returns Return <tt><strong>true</strong></tt> is a language is found, <tt><strong>false</strong></tt> otherwise
@@ -64,7 +64,7 @@ enyo.kind({
 				this.destination = language.toLowerCase();
 				return true;
 			}
-			else if(language.length == 5 && language.indexOf('-') == 2) {
+			else if(language.length == 5 && language.indexOf("-") == 2) {
 				//Standard navigator format (i.e. "en-us", "en-uk", "fr-fr", "fr-ca", "fr-be", etc.)
 				this.destination = language.substr(0,2)+"_"+language.substr(3,2).toUpperCase();//set format from "xx-yy" to "xx_YY"
 				return true;
@@ -73,7 +73,7 @@ enyo.kind({
 				return false;
 			}
 		},
-	
+
 		/**
 		 * Add a group of translation
 		 * @param {Object[]} newList The list of new translation
@@ -83,7 +83,7 @@ enyo.kind({
 				this.addLocalization(newList[tour]);
 			};
 		},
-	
+
 		/**
 		 * Add a translation to the list
 		 * @param {Object} item The new translation
@@ -91,7 +91,7 @@ enyo.kind({
 		addLocalization: function(item) {
 			this.list.push(item);
 		},
-	
+
 		/**
 		 * Search and select the right plural form of a given text
 		 * @private
@@ -173,38 +173,63 @@ enyo.kind({
 enyo.T = function(source, context) {
 	var longSource = enyo.localize.source,//Long language format ("xx_YY")
 		shortSource = longSource.substr(0,2),//Short language format ("xx")
-	
+
 		longDest = enyo.localize.destination,//Long language format ("xx_YY")
 		shortDest = longDest.substr(0,2),//Short language format ("xx")
-	
+
 		resultat = source,
 		tour = 0,
 		list = enyo.localize.getList(),
-		size = list.length;
-	
+		size = list.length,
+
+		translatedType = 0;
+
 	for(;tour < size; tour++) {
 		var item = list[tour];
 		//Search source translation
 		if(
 			source == item[longSource] ||
 			source == item[shortSource] ||
-			source == item['key']
+			source == item["key"]
 		) {//In Long or short format or special key
 			//Select the good translation
-			if(item[longDest]) {//in long language if exist
+			if(item[longDest]) {
+				//Select the long language format (more precise)
 				resultat = item[longDest];
+				translatedType = 5;
+				break;//The best translation, don't need to go further
 			}
 			else if(item[shortDest]) {//in short if exist and long don't
+				//Select the short language format
 				resultat = item[shortDest];
+				translatedType = 4;
 			}
-			else if(item['default']){//No long or short format language, the language don't have translation
-				resultat = item['default'];
+			else if(translatedType < 3 && item["default"]){
+				//No long or short format language, the language don't have translation, take the default value
+				resultat = item["default"];
+				translatedType = 3;
 			}
-			if(resultat != source)//If resultat different than source, the translation have been found
-				{ continue; }
+			else if(translatedType < 2 && item[longSource]){
+				//If no default found, select the source (long)
+				resultat = item[longSource];
+				translatedType = 2;
+			}
+			else if(translatedType < 1 && item[shortSource]){
+				//If no default found, select the source (short)
+				resultat = item[shortSource];
+				translatedType = 1;
+			}
 		}
 	}
-	
+
+	//Send an alert if needed.
+	switch(translatedType) {
+		case 0: enyo.error("No translation for \""+source+"\" in \""+longDest+"\""); break;
+		case 1: enyo.warn("No translation for \""+source+"\" in \""+longDest+"\", select source translation (\""+shortSource+"\")"); break;
+		case 2: enyo.warn("No translation for \""+source+"\" in \""+longDest+"\", select source translation (\""+longSource+"\")"); break;
+		case 3: enyo.warn("No translation for \""+source+"\" in \""+longDest+"\", select default translation"); break;
+	}
+
 	resultat = enyo.localize.pluralSearch(resultat, context);//Search and transform plural form
 	return enyo.macroize(resultat, context);
 }
