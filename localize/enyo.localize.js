@@ -10,7 +10,7 @@ enyo.kind({
 	 * Translation Module for Enyo
 	 * @name enyo.localize
 	 * @namespace
- 	 * @version 2.1 (03/03/2012)
+ 	 * @version 2.3 (15/03/2012)
 	 * @author MacFJA
 	 * @type Object
 	 */
@@ -59,14 +59,22 @@ enyo.kind({
 				return false;
 			}
 
-			if(language.length == 2) {
-				//only 2 letter format (i.e. "en", "fr", "es", "de", etc.)
-				this.destination = language.toLowerCase();
+			var index = language.indexOf("-"),
+				length = language.length;
+			if((5 <= length && 7 >= length) && (2 == index || 3 == index)) {
+				/* long lang format (i.e. "en-us", "en-uk", "fr-fr", "fr-ca", "fr-be", etc.)
+					available format:
+						xx-yy
+						xx-yyy
+						xxx-yy
+						xxx-yyy
+				*/
+				this.destination = language.substr(0,index)+"_"+language.substring(index+1,length).toUpperCase();//set format from "xx-yy" to "xx_YY"
 				return true;
 			}
-			else if(language.length == 5 && language.indexOf("-") == 2) {
-				//Standard navigator format (i.e. "en-us", "en-uk", "fr-fr", "fr-ca", "fr-be", etc.)
-				this.destination = language.substr(0,2)+"_"+language.substr(3,2).toUpperCase();//set format from "xx-yy" to "xx_YY"
+			else if(-1 == index && (2 == length || 3 == length)) {
+				//only 2/3 letter format (i.e. "en", "fr", "es", "de", "arb" (Standard Arabic) etc.)
+				this.destination = language.toLowerCase();
 				return true;
 			}
 			else {//Unrecognized format
@@ -101,57 +109,52 @@ enyo.kind({
 		 * @type String
 		*/
 		pluralSearch: function(data, context) {
-			var re = /\{\$\w+\|.[^}]+\}/g;//RegEx search for {$something|another thing}
-			var search = re.exec(data);
+			var re = /\{\$\w+\|.[^}]+\}/g,//RegEx search for {$something|another thing}
+				search = re.exec(data);
 
 			if(!search)//Plural don't exist
 				{ return data; }
 
-			var plural = search[0];
+			var plural = search[0],
+				list = plural.split("|"),//Separate base and each case
+				size = list.length;
 
-			//Separate base and each case
-			var list = plural.split("|");
-
-			//Remove the first "{"
-			list[0] = list[0].substring(1);
-			//Remove the last "}"
-			var item = list[list.length-1];
+			var varName = list[0].substring(2),//Remove the first "{" and "$"
+				item = list[list.length-1];//Remove the last "}"
 			list[list.length-1] = item.substring(0, item.length-1);
 
 			//Get the context value (set to "*" if no context found)
-			if(!context || !context.length)
+			if(!context)
 				{ var cValue = "*"; }
 			else
-				{ var cValue = (!context[list[0].substring(1)])?"*":context[list[0].substring(1)]; }
-
+				{ var cValue = (context[varName] == undefined)?"*":context[varName]; }
 
 			//Extract the number
-			for (var tour=1, size=list.length; tour < size; tour++) {
+			for (var tour=1; tour < size; tour++) {
 				var infos = list[tour].split(":");
 				list[tour] = {"id": infos[0], "text": infos[1]};
 			};
 
 			//Replace $obj by {$obj} in all fields
-			var re = new RegExp("\\"+list[0], "g");
-			for (var tour=1, size=list.length; tour < size; tour++) {
+			re = new RegExp("\\$"+varName, "g");
+			tour = 1;
+			for (; tour < size; tour++) {
 				var item = list[tour].text;
-				list[tour].text = item.replace(re, "{"+list[0]+"}");
+				list[tour].text = item.replace(re, "{$"+varName+"}");
 			};
 
 			//Select the good choice
 			var choice = "";
-			for (var tour=1, size=list.length; tour < size; tour++) {
-				if(list[tour].id == cValue) {
-					choice = list[tour].text;
-				}
+			tour = 1;
+			for (; tour < size; tour++) {
+				list[tour].id == cValue && (choice = list[tour].text);
 			};
-
+			
 			if(!choice) {
+				tour = 1;
 				//If we are here, then search for "*" choice
-				for (var tour=1, size=list.length; tour < size; tour++) {
-					if(list[tour].id == "*") {
-						choice = list[tour].text;
-					}
+				for (; tour < size; tour++) {
+					"*" == list[tour].id && (choice = list[tour].text);
 				};
 			}
 			//Update the source
@@ -204,17 +207,17 @@ enyo.T = function(source, context) {
 				resultat = item[shortDest];
 				translatedType = 4;
 			}
-			else if(translatedType < 3 && item["default"]){
+			else if(3 > translatedType && item["default"]){
 				//No long or short format language, the language don't have translation, take the default value
 				resultat = item["default"];
 				translatedType = 3;
 			}
-			else if(translatedType < 2 && item[longSource]){
+			else if(3 > translatedType && item[longSource]){
 				//If no default found, select the source (long)
 				resultat = item[longSource];
 				translatedType = 2;
 			}
-			else if(translatedType < 1 && item[shortSource]){
+			else if(1 > translatedType && item[shortSource]){
 				//If no default found, select the source (short)
 				resultat = item[shortSource];
 				translatedType = 1;
