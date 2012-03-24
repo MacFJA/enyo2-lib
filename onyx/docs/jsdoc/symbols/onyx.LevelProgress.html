@@ -5,7 +5,7 @@
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="generator" content="JsDoc Toolkit" />
 		
-		<title>JsDoc Reference - onyx.TextArea</title>
+		<title>JsDoc Reference - onyx.LevelProgress</title>
 
 		<style type="text/css">
 			/* default.css */
@@ -210,28 +210,26 @@ ul.inheritsList
 <!-- ============================== class title ============================ -->
 			<h1 class="classTitle">
 				
-				Class onyx.TextArea
+				Class onyx.LevelProgress
 			</h1>
 
 <!-- ============================== class summary ========================== -->			
 			<p class="description">
 				<br />Version
-					1.1 (03/03/2012).<br />
+					1.0 (24/03/2012).<br />
 				
-				<br />Extends
-					<a href="../symbols/onyx.Input.html">onyx.Input</a>.<br />
 				
 			
 				
 				
 				
-					<br /><i>Defined in: </i> <a href="../symbols/src/_Users_florent_Documents_Programmation_GitHub_enyo2-lib_onyx_TextArea.js.html">TextArea.js</a>.
+					<br /><i>Defined in: </i> <a href="../symbols/src/_Users_florent_Documents_Programmation_GitHub_enyo2-lib_onyx_LevelProgress.js.html">LevelProgress.js</a>.
 				
 			</p>
 
 <!-- ============================== constructor summary ==================== -->			
 			
-			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class onyx.TextArea.">
+			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class onyx.LevelProgress.">
 				<caption>Class Summary</caption>
 				<thead>
 					<tr>
@@ -244,9 +242,9 @@ ul.inheritsList
 						<td class="attributes">&nbsp;</td>
 						<td class="nameDescription" >
 							<div class="fixedFont">
-								<b><a href="../symbols/onyx.TextArea.html#constructor">onyx.TextArea</a></b>()
+								<b><a href="../symbols/onyx.LevelProgress.html#constructor">onyx.LevelProgress</a></b>()
 							</div>
-							<div class="description"></div>
+							<div class="description">Level progess bar</div>
 						</td>
 					</tr>
 				</tbody>
@@ -257,7 +255,7 @@ ul.inheritsList
 			
 				
 				
-				<table class="summaryTable" cellspacing="0" summary="A summary of the fields documented in the class onyx.TextArea.">
+				<table class="summaryTable" cellspacing="0" summary="A summary of the fields documented in the class onyx.LevelProgress.">
 					<caption>Field Summary</caption>
 					<thead>
 						<tr>
@@ -271,9 +269,9 @@ ul.inheritsList
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
 								<div class="fixedFont">
-								<b><a href="../symbols/onyx.TextArea.html#autoResize">autoResize</a></b>
+								<b><a href="../symbols/onyx.LevelProgress.html#critical">critical</a></b>
 								</div>
-								<div class="description">Define the resize behavoir (use getter/setter)</div>
+								<div class="description">The critical level (red) (use getter/setter)</div>
 							</td>
 						</tr>
 					
@@ -281,9 +279,9 @@ ul.inheritsList
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
 								<div class="fixedFont">
-								<b><a href="../symbols/onyx.TextArea.html#maxRows">maxRows</a></b>
+								<b><a href="../symbols/onyx.LevelProgress.html#editable">editable</a></b>
 								</div>
-								<div class="description">The maximum number of row to display (use getter/setter).</div>
+								<div class="description">Define is user can change value (use getter/setter)</div>
 							</td>
 						</tr>
 					
@@ -291,9 +289,49 @@ ul.inheritsList
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
 								<div class="fixedFont">
-								<b><a href="../symbols/onyx.TextArea.html#minRows">minRows</a></b>
+								<b><a href="../symbols/onyx.LevelProgress.html#maximum">maximum</a></b>
 								</div>
-								<div class="description">The minimum number of row to display (use getter/setter)</div>
+								<div class="description">The maximum value of the progression (use getter/setter)</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/onyx.LevelProgress.html#minimum">minimum</a></b>
+								</div>
+								<div class="description">The minimum value of the progression (use getter/setter)</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/onyx.LevelProgress.html#showValue">showValue</a></b>
+								</div>
+								<div class="description">Display the value of each level (use getter/setter)</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/onyx.LevelProgress.html#value">value</a></b>
+								</div>
+								<div class="description">The value of the progression (use getter/setter)</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/onyx.LevelProgress.html#warning">warning</a></b>
+								</div>
+								<div class="description">The warning level (yellow) (use getter/setter)</div>
 							</td>
 						</tr>
 					
@@ -301,10 +339,6 @@ ul.inheritsList
 				</table>
 				
 				
-				
-				<dl class="inheritsList">
-				
-				</dl>
 				
 			
 
@@ -314,7 +348,7 @@ ul.inheritsList
 			
 				
 				
-				<table class="summaryTable" cellspacing="0" summary="A summary of the events documented in the class onyx.TextArea.">
+				<table class="summaryTable" cellspacing="0" summary="A summary of the events documented in the class onyx.LevelProgress.">
 					<caption>Event Summary</caption>
 					<thead>
 						<tr>
@@ -327,9 +361,18 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/onyx.TextArea.html#event:onSizeChange">onSizeChange</a></b>(inSender, oldSize, newSize)
+								<div class="fixedFont"><b><a href="../symbols/onyx.LevelProgress.html#event:onChange">onChange</a></b>(inSender, inData)
 								</div>
-								<div class="description">Inform that the object size has changed</div>
+								<div class="description">Inform that the value has changed</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/onyx.LevelProgress.html#event:onChanging">onChanging</a></b>(inSender, inData)
+								</div>
+								<div class="description">Inform that the value is changing</div>
 							</td>
 						</tr>
 					
@@ -337,10 +380,6 @@ ul.inheritsList
 				</table>
 				
 				
-				
-				<dl class="inheritsList">
-				
-				</dl>
 				
 			
 
@@ -352,11 +391,11 @@ ul.inheritsList
 				</div>
 				
 				<div class="fixedFont">
-						<b>onyx.TextArea</b>()
+						<b>onyx.LevelProgress</b>()
 				</div>
 				
 				<div class="description">
-					
+					Level progess bar
 					<br /><i>Author: </i>MacFJA.
 				</div>
 				
@@ -369,13 +408,6 @@ ul.inheritsList
 					
 					
 					
-						<dl class="detailList">
-						<dt class="heading">Requires:</dt>
-						
-							<dd><a href="../symbols/onyx.Input.html">onyx.Input</a></dd>
-						
-						</dl>
-					
 					
 
 			</div>
@@ -387,15 +419,44 @@ ul.inheritsList
 					Field Detail
 				</div>
 				
-					<a name="autoResize"> </a>
+					<a name="critical"> </a>
 					<div class="fixedFont">
 					
-					<span class="light">{Boolean}</span>
-					<b>autoResize</b>
+					<span class="light">{Number}</span>
+					<b>critical</b>
 					
 					</div>
 					<div class="description">
-						Define the resize behavoir (use getter/setter)
+						The critical level (red) (use getter/setter)
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Default Value:</dt>
+							<dd>
+								3
+							</dd>
+							</dl>
+						
+
+					<hr />
+				
+					<a name="editable"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Boolean}</span>
+					<b>editable</b>
+					
+					</div>
+					<div class="description">
+						Define is user can change value (use getter/setter)
 						
 						
 					</div>
@@ -416,16 +477,15 @@ ul.inheritsList
 
 					<hr />
 				
-					<a name="maxRows"> </a>
+					<a name="maximum"> </a>
 					<div class="fixedFont">
 					
 					<span class="light">{Number}</span>
-					<b>maxRows</b>
+					<b>maximum</b>
 					
 					</div>
 					<div class="description">
-						The maximum number of row to display (use getter/setter).<br />
-Set to <tt><b>null</b></tt> to don't limit.
+						The maximum value of the progression (use getter/setter)
 						
 						
 					</div>
@@ -439,22 +499,22 @@ Set to <tt><b>null</b></tt> to don't limit.
 							<dl class="detailList">
 							<dt class="heading">Default Value:</dt>
 							<dd>
-								null
+								10
 							</dd>
 							</dl>
 						
 
 					<hr />
 				
-					<a name="minRows"> </a>
+					<a name="minimum"> </a>
 					<div class="fixedFont">
 					
 					<span class="light">{Number}</span>
-					<b>minRows</b>
+					<b>minimum</b>
 					
 					</div>
 					<div class="description">
-						The minimum number of row to display (use getter/setter)
+						The minimum value of the progression (use getter/setter)
 						
 						
 					</div>
@@ -468,7 +528,94 @@ Set to <tt><b>null</b></tt> to don't limit.
 							<dl class="detailList">
 							<dt class="heading">Default Value:</dt>
 							<dd>
-								2
+								0
+							</dd>
+							</dl>
+						
+
+					<hr />
+				
+					<a name="showValue"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Boolean}</span>
+					<b>showValue</b>
+					
+					</div>
+					<div class="description">
+						Display the value of each level (use getter/setter)
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Default Value:</dt>
+							<dd>
+								true
+							</dd>
+							</dl>
+						
+
+					<hr />
+				
+					<a name="value"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Number}</span>
+					<b>value</b>
+					
+					</div>
+					<div class="description">
+						The value of the progression (use getter/setter)
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Default Value:</dt>
+							<dd>
+								5
+							</dd>
+							</dl>
+						
+
+					<hr />
+				
+					<a name="warning"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Number}</span>
+					<b>warning</b>
+					
+					</div>
+					<div class="description">
+						The warning level (yellow) (use getter/setter)
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Default Value:</dt>
+							<dd>
+								5
 							</dd>
 							</dl>
 						
@@ -486,15 +633,15 @@ Set to <tt><b>null</b></tt> to don't limit.
 					Event Detail
 				</div>
 				
-					<a name="event:onSizeChange"> </a>
+					<a name="event:onChange"> </a>
 					<div class="fixedFont">
 					
 					
-					<b>onSizeChange</b>(inSender, oldSize, newSize)
+					<b>onChange</b>(inSender, inData)
 					
 					</div>
 					<div class="description">
-						Inform that the object size has changed
+						Inform that the value has changed
 						
 						
 					</div>
@@ -512,16 +659,59 @@ Set to <tt><b>null</b></tt> to don't limit.
 								<dd>Event's sender</dd>
 							
 								<dt>
-									<span class="light fixedFont">{Number}</span> <b>oldSize</b>
+									<span class="light fixedFont">{Object}</span> <b>inData</b>
 									
 								</dt>
-								<dd>The old number of rows</dd>
+								<dd><tt>inData.value</tt>, contain the new value</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">See:</dt>
+							
+								<dd>enyojs.com for more information about events</dd>
+							
+							</dl>
+						
+
+					<hr />
+				
+					<a name="event:onChanging"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>onChanging</b>(inSender, inData)
+					
+					</div>
+					<div class="description">
+						Inform that the value is changing
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{Number}</span> <b>newSize</b>
+									<span class="light fixedFont">{Object}</span> <b>inSender</b>
 									
 								</dt>
-								<dd>The new number of rows</dd>
+								<dd>Event's sender</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>inData</b>
+									
+								</dt>
+								<dd><tt>inData.value</tt>, contain the new value</dd>
 							
 							</dl>
 						

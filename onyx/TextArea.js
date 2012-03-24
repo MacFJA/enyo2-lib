@@ -17,6 +17,7 @@
  * @class
  * @requires onyx.Input
  * @extends onyx.Input
+ * @author MacFJA
  * @version 1.1 (03/03/2012)
  */
 enyo.kind({
