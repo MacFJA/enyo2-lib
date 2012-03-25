@@ -99,8 +99,8 @@ enyo.kind({
 		onChanging: ""
 	},
 	
-	margin: 6,//Left + Right
-	inDrag: false,//is the drag occurs?
+	margin: 4,//Left + Right
+	dragging: false,//is the drag occurs?
 	
 	/** @lends onyx.LevelProgress# */
 	
@@ -110,7 +110,9 @@ enyo.kind({
 	 */
 	create: function() {
 		this.inherited(arguments);
-		enyo.asyncMethod(this, "redraw", true, true);
+		this.editableChanged();
+		enyo.asyncMethod(this, "build");
+		enyo.asyncMethod(this, "redraw", true);
 	},
 
 	/**
@@ -135,7 +137,8 @@ enyo.kind({
 		if(this.maximum <= this.minimum) {
 			this.maximum = this.minimum+1;
 		}
-		this.redraw(true, true);
+		this.build();
+		this.redraw(true);
 	},
 	/**
 	 * Handler for <q>minimum</q> value change
@@ -145,7 +148,8 @@ enyo.kind({
 		if(this.minimum >= this.maximum) {
 			this.minimum = this.maximum-1;
 		}
-		this.redraw(true, true);
+		this.build();
+		this.redraw(true);
 	},
 	/**
 	 * Handler for <q>value</q> value change
@@ -163,6 +167,14 @@ enyo.kind({
 	showValueChanged: function() {
 		this.redraw();
 	},
+	/**
+	 * Handler for <q>editable</q> value change
+	 * @private
+	 */
+	 editableChanged: function() {
+		this.addRemoveClass("onyx-level-editable", this.editable);
+	},
+	
 
 	/**
 	 * Function that destroy all level and recreate them
@@ -195,27 +207,23 @@ enyo.kind({
 	 * @param {Boolean} updateWidth inform that the with of levels need to be recalculate
 	 * @param {Boolean} force inform that the all levels need to be recreate
 	 */
-	redraw: function(updateWidth, force) {
-		if(force) { this.build(); }
-		
-		var elements = this.getComponents();
+	redraw: function(updateWidth) {
+		var elements = this.getComponents(),
+			bounds = this.getBounds(),
+			elmWidth = Math.floor(bounds.width/(this.maximum-this.minimum)-this.margin),
+			loopMax = elements.length,
+			tour = 0;
 
-		var bounds = this.getBounds()
-		
-		var elementWidth = Math.floor(bounds.width/(this.maximum-this.minimum)-this.margin);//-2 cause by border
-		var className = "normal";
-		if(this.value > this.warning)       { className = "normal"; }
-		else if(this.value > this.critical) { className = "warning"; }
-		else                                { className = "critical"; }
-		
-		for(tour=0;tour<elements.length;tour++) {
-			if(updateWidth || force) { elements[tour].setBounds({width: elementWidth}, 'px'); }
-			var elmValue = elements[tour].value;
-			var isOn = elmValue <= this.value;
+		for(;tour<loopMax;tour++) {
+			if(updateWidth) { elements[tour].setBounds({width: elmWidth}, 'px'); }
+
+			var elmValue = elements[tour].value,
+				isOn = elmValue <= this.value;
+
 			elements[tour].setContent(this.showValue?elmValue:"");
-			elements[tour].addRemoveClass("normal",   isOn && className == "normal");
-			elements[tour].addRemoveClass("warning",  isOn && className == "warning");
-			elements[tour].addRemoveClass("critical", isOn && className == "critical");
+			elements[tour].addRemoveClass("normal",   isOn && this.value >  this.warning);
+			elements[tour].addRemoveClass("warning",  isOn && this.value >  this.critical);
+			elements[tour].addRemoveClass("critical", isOn && this.value <= this.critical);
 			elements[tour].addRemoveClass("off", !isOn);
 		}
 	},
@@ -226,13 +234,14 @@ enyo.kind({
 	 */
 	rezise: function() {
 		this.redraw(true);
+		return true;
 	},
 	/**
 	 * Handler for <q>onTap</q> event
 	 * @private
 	 */
 	tap: function(inSender, inEvent) {
-		if(!this.editable) { return; }
+		if(!this.editable) { return false; }
 		if(inSender.type && inSender.type == "visual") {
 			this.setValue(inSender.value);
 			this.doChange({value: this.value});
@@ -244,7 +253,7 @@ enyo.kind({
 	 */
 	dragstart: function(inSender, inEvent) {
 		if (this.editable && inEvent.horizontal) {
-			this.inDrag = true;
+			this.dragging = true;
 			if(inSender.type && inSender.type == "visual") {
 				this.setValue(inSender.value);
 				this.doChanging({value: this.value});
@@ -258,17 +267,20 @@ enyo.kind({
 	 * @private
 	 */
 	dragfinish: function(inSender, inEvent) {
-		this.inDrag = false;
-		inEvent.preventTap();
-		this.doChange({value: this.value});
-		return true;
+		if(this.editable && this.dragging) {
+			this.dragging = false;
+			inEvent.preventTap();
+			this.doChange({value: this.value});
+			return true;
+		}
 	},
 	/**
 	 * Handler for <q>onEnter</q> event
 	 * @private
 	 */
 	enter: function(inSender, inEvent) {
-		if(!this.editable || !this.inDrag) { return; }
+		if(!this.editable || !this.dragging) { return false; }
+
 		if(inSender.type && inSender.type == "visual") {
 			this.setValue(inSender.value);
 			this.doChanging({value: this.value});

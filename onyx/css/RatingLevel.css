@@ -15,8 +15,8 @@
 
 .onyx-rating-bar .onyx-rating-element {
 	background-image: url(../images/Star.png);
-	background-size: auto 100%;
-	background-position: center center;
+	background-size: auto 200%;
+	background-position: top center;
 	background-repeat: no-repeat;
 	display: inline-block;
 	color: transparent;
@@ -26,6 +26,11 @@
 	vertical-align: top;
 }
 
+.onyx-rating-bar.onyx-level-editable:active .onyx-rating-element {
+	background-position: bottom center;
+}
+
 .onyx-rating-bar .onyx-rating-element.off {
 	background-image: url(../images/Null.png);
+	background-size: auto 100%;
 }

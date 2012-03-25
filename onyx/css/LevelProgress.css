@@ -12,7 +12,7 @@
 	display: inline-block;
 	background-color: #e0e0e0;
 	border: 1px solid #999;
-	margin: 0 3px;
+	margin: 0 2px;
 	text-align: center;
 	color: #707070;
 	box-sizing: border-box;
@@ -40,10 +40,10 @@
 }
 
 .onyx-level-bar .onyx-level-element-hidden {
-	width: 6px!important;
+	width: 4px!important;
 	height: 100%;
 	display: inline-block;
-	margin-right: -6px;
+	margin-right: -4px;
 	color: transparent;
 	text-overflow: ellipsis;
 }
