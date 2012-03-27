@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+	<title>onyx textarea sample</title>
+	<script src="http://enyojs.com/enyo-2.0b3/enyo.js" type="text/javascript"></script>
+	<script>
+		enyo.depends(
+			"http://enyojs.com/enyo-2.0b3/enyo.css",
+			"http://enyojs.com/lib/onyx/build/onyx.css",
+			"http://enyojs.com/lib/onyx/build/onyx.js",
+			"../UpDown.js",
+			"../css/UpDown.css",
+			"http://enyojs.com/lib/layout/fittable/package.js"
+		);
+		
+	</script>
+</head>
+<body>
+	<script>
+		new (enyo.kind({
+			name: "App",
+			kind: "Control",
+			components: [
+				{content: "UpDown", style: "margin: 10px;"},
+				{kind: "onyx.UpDown"},
+				{content: "UpDown, Disabled", style: "margin: 10px;"},
+				{kind: "onyx.UpDown", disabled: true},
+				{content: "UpDown, Only up disabled", style: "margin: 10px;"},
+				{kind: "onyx.UpDown", disabledUp: true},
+				{content: "UpDown, Only down disabled", style: "margin: 10px;"},
+				{kind: "onyx.UpDown", disabledDown: true},
+				{content: "UpDown, disabled, and up disabled", style: "margin: 10px;"},
+				{kind: "onyx.UpDown", disabledUp: true, disabled: true},
+				{tag: "hr"},
+				{content: "UpDown, With a live preview, limit between 0 and 200", style: "margin: 10px;"},
+				{kind: "onyx.UpDown", name: "tester", disabledDown: true, onUp: "doUp", onDown: "doDown"},
+				{name: "live", content: "The value is: 0"}
+			],
+			
+			a: 0,
+			
+			doUp: function () {
+				this.a++;
+				this.$.live.setContent("The value is: "+this.a);
+				this.$.tester.setDisabledUp(this.a >= 200);
+				this.$.tester.setDisabledDown(this.a <= 0);
+			},
+			doDown: function () {
+				this.a--;
+				this.$.live.setContent("The value is: "+this.a);
+				this.$.tester.setDisabledUp(this.a >= 200);
+				this.$.tester.setDisabledDown(this.a <= 0);
+			},
+			get: function () {
+				alert(this.$.tester2.getValue());
+			}
+		}))().write();
+	</script>
+</body>
+</html>
