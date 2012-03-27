@@ -1,7 +1,6 @@
-.onyx-updown {
+.onyx-updown {}
 
-}
-
+/* Generic button definition */
 .onyx-updown .onyx-updown-down, .onyx-updown .onyx-updown-up {
 	background-image: url(http://enyojs.com/lib/onyx/images/gradient.png);
 	background-position: bottom;
@@ -21,24 +20,26 @@
 	box-shadow: inset 0px 1px 0px rgba(255,255,255,0.2);
 }
 
-
+/* Down button specificity */
 .onyx-updown .onyx-updown-down {
 	border-radius: 3px 0 0 3px;
 	margin-right: -1px;
 }
 
-
+/* Up button specificity */
 .onyx-updown .onyx-updown-up {
 	border-radius: 0 3px 3px 0;
 }
 
-
+/* Button pressed style */
 .onyx-updown .onyx-updown-down:active, .onyx-updown .onyx-updown-up:active {
 	background-image: url(http://enyojs.com/lib/onyx/images/gradient-invert.png);
 	background-position: top;
 	box-shadow: inset 0px 1px 0px rgba(0,0,0,0.1);
 	border-top-color: #666;
 }
+
+/* Avoid pressed styling of disabled button */
 .onyx-updown .onyx-updown-down.disabled:active,
 .onyx-updown .onyx-updown-up.disabled:active,
 .onyx-updown.disabled .onyx-updown-down:active,
@@ -49,10 +50,12 @@
 	border-top-color: #999;
 }
 
+/* Generic disabled style */
 .onyx-updown.disabled, .onyx-updown .onyx-updown-down.disabled, .onyx-updown .onyx-updown-up.disabled {
 	opacity: 0.4;
 }
 
+/* Avoid "double" disabled effect */
 .onyx-updown.disabled .onyx-updown-down, .onyx-updown.disabled .onyx-updown-up {
 	opacity: 1!important;
 }

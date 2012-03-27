@@ -42,13 +42,19 @@ enyo.kind({
 		disabledDown: false
 	},
 
-	/** @private */
+	/**
+	 * List of events to handles
+	 * @private
+	 */
 	handlers: {
 		ondown: "down",
 		onup: "up",
 		ontap: "tap"
 	},
 
+	/**
+	 * Events send by the UpDown control
+	 */
 	events: {
 		/** @lends onyx.UpDown# */
 		/**
@@ -66,16 +72,34 @@ enyo.kind({
 		 */
 		onDown: ""
 	},
+	/** @lends onyx.UpDown# */
 	
+	/**
+	 * Is the cursor is pressed? (not yet release)
+	 * @private
+	 * @type Boolean
+	 * @default false
+	 */
 	isdown: false,
+	
+	/**
+	 * Internal counter for make the increase speed
+	 * @private
+	 * @type Number
+	 * @default 0
+	 */
 	downoccur: 0,
 	
+	/**
+	 * Components of the control
+	 * @ignore
+	 * @type Array
+	 * @default the 2 controls
+	 */
 	components: [
 		{classes: "onyx-updown-down", name: "down", content: "-"},
 		{classes: "onyx-updown-up", name: "up", content: "+"},
 	],
-	
-	/** @lends onyx.UpDown */
 	
 	/**
 	 * create function, init the object
@@ -115,13 +139,13 @@ enyo.kind({
 	 * @private
 	 */
 	tap: function(inSender, inEvent) {
-		if(this.disabled ||
-			inSender == this.$.up && this.disabledUp ||
+		if(this.disabled ||//If the control is disabled
+			inSender == this.$.up && this.disabledUp ||//Or the pressed button is disabled
 			inSender == this.$.down && this.disabledDown)
-			{ return false; }
+			{ return false; }//Don't go further
 			
-		if(inSender == this.$.up) { this.doUp(); }
-		if(inSender == this.$.down) { this.doDown(); }
+		if(inSender == this.$.up) { this.doUp(); }//Send the OnUp event
+		if(inSender == this.$.down) { this.doDown(); }//Send the OnDown event
 	},
 	
 	/**
@@ -129,13 +153,14 @@ enyo.kind({
 	 * @private
 	 */
 	down: function(inSender, inEvent) {
-		if(this.disabled ||
+		if(this.disabled ||//If the control is disabled
 			inSender == this.$.up && this.disabledUp ||
-			inSender == this.$.down && this.disabledDown)
-			{ return false; }
-		this.isdown = true;
-		this.downoccur = 0;
-		enyo.job("press", enyo.bind(this, "askForAction", inSender == this.$.up), 500);
+			inSender == this.$.down && this.disabledDown)//Or the pressed button is disabled
+			{ return false; }//Don't go further
+
+		this.isdown = true;//Now the button is pressed, store that information
+		this.downoccur = 0;//Reset the counter
+		enyo.job(this.id+"_inpress", enyo.bind(this, "askForAction", inSender == this.$.up), 500);//Make a enyo.job
 	},
 	
 	/**
@@ -143,21 +168,26 @@ enyo.kind({
 	 * @private
 	 */
 	up: function() {
-		this.isdown = false;
+		this.isdown = false;//The button is release, store that information
 	},
 	
+	/**
+	 * Internal method use with enyo.job
+	 * @private
+	 * @param {Boolean} isUp <tt><b>true</b></tt> if its the up button is pressed
+	 */
 	askForAction: function(isUp) {
-		if(!this.isdown || this.disabled ||
-			isUp && this.disabledUp ||
+		if(!this.isdown || this.disabled ||//If the button is release or the control is disabled
+			isUp && this.disabledUp ||//Or the pressed button is disabled 
 			!isUp && this.disabledDown)
-		{
-			enyo.job.stop("press");
-		}
+			{ enyo.job.stop(this.id+"_inpress"); }//Don't go further
 		else {
-			if(isUp) { this.doUp(); }
-			else { this.doDown(); }
-			if(this.downoccur < 14) { this.downoccur++; }
-			enyo.job("press", enyo.bind(this, "askForAction", isUp), 1000-this.downoccur*70);
+
+			if(isUp) { this.doUp(); }//Send the OnUp event
+			else { this.doDown(); }//Send the OnDown event
+
+			if(this.downoccur < 14) { this.downoccur++; }//Increase the counter is less than 14
+			enyo.job(this.id+"_inpress", enyo.bind(this, "askForAction", isUp), 1000-this.downoccur*70);//Make a enyo.job
 		}
 	}
 });
