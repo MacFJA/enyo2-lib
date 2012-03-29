@@ -25,6 +25,10 @@ onyx.UpDown
 ----------------
 > A Up and Down control, maintaining the cursor increase progressively the event speed
 
+onyx.NavigationBar
+------------------
+> A navigation bar (path bar) control
+
 ----
 Documentations
 ==============
