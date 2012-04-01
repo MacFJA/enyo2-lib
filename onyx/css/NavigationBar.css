@@ -4,6 +4,7 @@
 	border: 1px solid #999;
 	height: 35px;
 	position: relative;
+	border-radius: 3px;
 }
 
 .onyx-navigationbar-scroller {
