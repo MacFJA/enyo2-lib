@@ -21,28 +21,18 @@
 			kind: "Control",
 			components: [
 				{tag: "hr"},
-				{kind: "onyx.NavigationBar", style:"margin: 20px", name: "demo", onSelected: "select", onPathRemove: "remove"},
+				{kind: "onyx.NavigationBar", path: "https://github.com/enyojs/enyo/blob/master/examples/0%20-%20Hello%20World/index.html", style:"margin: 20px", name: "demo", onSelected: "select", onPathRemove: "remove"},
 				{tag: "hr"},
 				{kind: "onyx.Button", ontap: "go", content: "Add date to path"},
 				{kind: "onyx.Button", ontap: "sPrev", content: "Select Previous"},
 				{kind: "onyx.Button", ontap: "sNext", content: "Select Next"},
+				{kind: "onyx.Button", ontap: "rNext", content: "Remove after selection"},
 				{tag: "hr"},
 				{content: "Feature : long path scroll, click to select, double click to select and remove all next items", style: "margin: 20px"}
 			],
 			
-			buildDefaultPath: function() {
-				this.$.demo.addToPath("https://github.com");
-				this.$.demo.addToPath("enyojs");
-				this.$.demo.addToPath("enyo");
-				this.$.demo.addToPath("blob");
-				this.$.demo.addToPath("master");
-				this.$.demo.addToPath("examples");
-				this.$.demo.addToPath("0%20-%20Hello%20World");
-				this.$.demo.addToPath("index.html");
-			},
-			
 			go: function(inSender, inEvent) {
-				this.$.demo.addToPath(new Date());
+				this.$.demo.addLevel(new Date());
 			},
 			
 			select: function(inSender, inEvent) {
@@ -56,10 +46,12 @@
 			},
 			sPrev: function() {
 				this.$.demo.selectPreviousItem();
+			},
+			rNext: function() {
+				this.$.demo.removeAfterSelected();
 			}
 		});
-		var a = new App().write();
-		a.buildDefaultPath();
+		var a = new App().renderInto(document.body);
 	</script>
 </body>
 </html>
