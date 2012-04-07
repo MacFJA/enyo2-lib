@@ -34,6 +34,10 @@ Documentations
 ==============
 All scripts files are documented (or are going to be) and respect JSDoc format, see: [jsdoc-toolkit](http://code.google.com/p/jsdoc-toolkit/)
 
+Live Examples
+=============
+Live examples can by found here : <http://MacFJA.github.com/enyo2-lib/>
+
 Tiny/Compress version
 =====================
 For get a tiny/compress version of javascript try: <http://closure-compiler.appspot.com/home> or [YUI Compressor](http://developer.yahoo.com/yui/compressor/) ([Online version](http://www.refresh-sf.com/yui/))
