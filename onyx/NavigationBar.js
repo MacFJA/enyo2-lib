@@ -312,7 +312,7 @@ enyo.kind({
 		if(!!item) {
 			if(this.selected == id) {
 				//The item to remove is the selected one
-				var before = this._getItemBefore(id);console.log(id, before);
+				var before = this._getItemBefore(id);
 				this.selectItemById(!before?-1:before.uid, true);//If an item before select it, or select nothing
 			}
 
