@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+	<title>Onyx : GradientSlider &amp; CustomGradientSlider samples</title>
+	<script src="http://enyojs.com/enyo-2.0b3/enyo.js" type="text/javascript"></script>
+	<script>
+		enyo.depends(
+			"http://enyojs.com/enyo-2.0b3/enyo.css",
+			"http://enyojs.com/lib/onyx/package.js",
+			"sources/GradientSlider.js",
+			"css/GradientSlider.css",
+			"sources/CustomGradientSlider.js"
+		);
+		
+	</script>
+</head>
+<body>
+	<script>
+		new (enyo.kind({
+			name: "App",
+			kind: "Control",
+			components: [
+				{content: "GradientSlider", style: "margin: 10px;"},
+				{kind: "onyx.GradientSlider", value: 40},
+				{tag: "hr"},
+				{content: "CustomGradientSlider", style: "margin: 10px;"},
+				{kind: "onyx.CustomGradientSlider", gradientPath: "RedGradient.png"}
+			],
+		}))().write();
+	</script>
+</body>
+</html>
