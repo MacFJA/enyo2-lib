@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+<head>
+	<title>Onyx : DynamicList sample</title>
+	<script src="http://enyojs.com/enyo-2.0b3/enyo.js" type="text/javascript" charset="utf-8"></script>
+	<script>
+		enyo.depends(
+			"http://enyojs.com/enyo-2.0b3/enyo.css",
+			"http://enyojs.com/lib/onyx/build/onyx.css",
+			"http://enyojs.com/lib/onyx/build/onyx.js",
+			"sources/DynamicList.js",
+			"css/DynamicList.css"
+		);
+		
+	</script>
+</head>
+<body>
+	<script>
+		new enyo.kind({
+			name: "App",
+			kind: "Control",
+			components: [
+				{content: "DynamicList", style: "margin: 10px;"},
+				{kind: "onyx.DynamicList", defaultRowHeight: 50, name: "list", style: "height: 250px; border: 1px solid red", onSetupRow: "setupRow", onRowTap:"rowTap"},
+				{tag: "hr"},
+				{kind: "onyx.Button", ontap: "iRow15", content: "Invalidate row 15"},
+				{kind: "onyx.Button", ontap: "goBottom", content: "Scroll to the bottom"},
+				{tag: "hr"},
+				{content: "The \"defaultRowHeight\" attribute is your estimation of the height of one row", style: "margin: 20px"},
+				{content: "In this example the list contain 150 rows, but only 6 are really load on launch, other row are load only when needed", style: "margin: 20px"},
+				{content: "Each row can be redraw, example : scroll to the row 15, then tap on \"Invalidate row 15\", the date change to the current date (the row is load only if visible)", style: "margin: 20px;"}
+			],
+			
+			setupRow: function(inSender, inEvent) {
+				console.log("onSetupRow", inEvent);
+				inEvent.template="<div style=\"border: 2px solid #000; font-size: 20px; padding: 10px;\">{$label}</div>";
+				inEvent.template={components: [
+					{kind: "onyx.Button", content: "Button : "+inEvent.context.label},
+					{content: inEvent.context.label+" : "+new Date()}
+				]};
+			},
+			iRow15: function() {
+				this.$.list.invalidateRow(14);
+			},
+			goBottom: function() {
+				this.$.list.$.scroller.scrollTo(0, this.$.list.$.scroller.getScrollBounds().height);
+			},
+			rowTap: function(inSender, inEvent) {
+				console.log("onRowTap", inEvent);
+			}
+		});
+		var a = new App().renderInto(document.body);
+		
+		for(var b=[],t=0;t<150;t++) {
+			b.push({label: t+1, owner: a});
+		}
+		
+		a.$.list.setItems(b);
+	</script>
+</body>
+</html>
