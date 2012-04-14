@@ -22,7 +22,7 @@ enyo.kind({
 		/** @lends onyx.CustomGradientSlider# */
 
 		/**
-		 * The path to the gradient image
+		 * The path to the gradient image (use getter/setter)
 		 * @type String
 		 * @default ""
 		 */
