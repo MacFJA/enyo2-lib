@@ -10,12 +10,13 @@
  * @name onyx.DynamicList
  * @class
  * @author MacFJA
- * @version 1.0 (14/04/2012)
+ * @version 1.1 (17/04/2012)
+ * @extends enyo.Scroller
  */
 enyo.kind({
 	name: "onyx.DynamicList",
-	kind: "enyo.Control",
-	classes: "enyo-unselectable onyx-dynamiclist",
+	kind: "enyo.Scroller",
+	classes: "onyx-dynamiclist",
 
 	published: {
 		/** @lends onyx.DynamicList# */
@@ -46,8 +47,8 @@ enyo.kind({
 	 * @private
 	 */
 	handlers: {
-		onScroll: 'scrollHandler',
-		ontap: "rowTapHandler"
+		onScroll: 'scrollHandler',//Touch scroll event
+		onscroll: 'scrollHandler'//Desktop srcoll event
 	},
 
 	/**
@@ -78,11 +79,9 @@ enyo.kind({
 	 * Components of the control
 	 * @ignore
 	 * @type Array
-	 * @default the scroller
+	 * @default <tt><i>[]</i></tt>
 	 */
-	components: [
-		{kind: "enyo.Scroller", strategyKind: "TouchScrollStrategy", classes: "onyx-dynamiclist-scroller", horizontal: "hidden", name: "scroller"}
-	],
+	components: [],
 	
 	/**
 	 * The internal row list
@@ -117,22 +116,23 @@ enyo.kind({
 	 */
 	itemsChanged: function() {
 		this.rows = [];//Reset the internal list of row
-		this.$.scroller.destroyClientControls();//clear the scroller contents
+		this.destroyClientControls();//clear the scroller contents
 		for(var tour=0,size=this.items.length;tour<size;tour++) {//Create the new list of rows
 			this.rows.push({
 				source: this.items[tour],
-				node: this.$.scroller.createComponent({//The default row (fix height to "defaultRowHeight")
+				node: this.createComponent({//The default row (fix height to "defaultRowHeight")
 					kind: "enyo.Control",
 					classes: "onyx-dynamiclist-row",
 					style: "min-height: "+this.defaultRowHeight+"px;",
-					xIndex: tour
+					xIndex: tour,
+					ontap: "rowTapHandler"
 				}, {onwer: this}),
 				template: (this.items[tour].template || this.rowTemplate),
 				generated: false
 			});
 			
-			if(this.$.scroller.hasNode())//If the scroller is ready
-				{ this.$.scroller.render(); }//Update it
+			if(this.hasNode())//If the scroller is ready
+				{ this.render(); }//Update it
 		}
 		this.resetHeights();//Create the list of rows height
 		this.calculateRowToDisplay();//Get visible rows
@@ -145,12 +145,12 @@ enyo.kind({
 	 * @name onyx.DynamicList#calculateRowToDisplay
 	 */
 	calculateRowToDisplay: function() {
-		if(!this.$.scroller.hasNode())//If the scroller is not ready, delay the method
+		if(!this.hasNode())//If the scroller is not ready, delay the method
 			{ enyo.asyncMethod(this, "calculateRowToDisplay"); return; }
 
 		//Get sizes
-		var top = this.$.scroller.getScrollBounds().top,
-			visibleHeight = this.$.scroller.getBounds().height;
+		var top = this.getScrollBounds().top,
+			visibleHeight = this.getBounds().height;
 		
 		//Get visible rows
 		firstToDisplay = this.indexAtHeight(top)-1;//One before
@@ -187,10 +187,6 @@ enyo.kind({
 	 * @name onyx.DynamicList#rowTapHandler
 	 */
 	rowTapHandler: function(inSender, inEvent) {
-		if(!inSender.hasClass("onyx-dynamiclist-row")) {
-			this.bubble("ontap", inEvent, inEvent.originator.parent);//Bubble event for get right node
-			return false;
-		}
 		var rowIdx = inSender.xIndex;
 		this.doRowTap({index: rowIdx, context: this.rows[rowIdx].source});//Send onRowTap event
 		return true;
