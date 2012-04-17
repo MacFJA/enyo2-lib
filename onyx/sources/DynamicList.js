@@ -48,7 +48,8 @@ enyo.kind({
 	 */
 	handlers: {
 		onScroll: 'scrollHandler',//Touch scroll event
-		onscroll: 'scrollHandler'//Desktop srcoll event
+		onscroll: 'scrollHandler',//Desktop srcoll event
+		onScrollStop: 'scrollEndHandler'
 	},
 
 	/**
@@ -205,6 +206,18 @@ enyo.kind({
 		//Limit calculateRowToDisplay call (memory save...)
 		enyo.job("calculateRowToDisplay", enyo.bind(this, "calculateRowToDisplay"), 15);
 	},
+	
+	/**
+	 * Handler for event <q>onScrollStop</q>
+	 * @function
+	 * @private
+	 * @param {Object} inSender The event sender
+	 * @param {Object} inEvent The event
+	 * @name onyx.DynamicList#scrollEndHandler
+	 */
+	scrollEndHandler: function(inSender, inEvent) {
+		this.calculateRowToDisplay();
+	}
 	
 	/**
 	 * Force the redraw of a row
