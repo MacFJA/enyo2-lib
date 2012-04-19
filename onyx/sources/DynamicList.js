@@ -10,7 +10,7 @@
  * @name onyx.DynamicList
  * @class
  * @author MacFJA
- * @version 1.1 (17/04/2012)
+ * @version 1.2 (19/04/2012)
  * @extends enyo.Scroller
  */
 enyo.kind({
@@ -140,27 +140,21 @@ enyo.kind({
 	},
 
 	/**
-	 * Calculate the list of the row that is displayed and generate them if needed
+	 * Generate a list of rows
 	 * @function
+	 * @param {Number} from The index of first row to generate
+	 * @param {Number} to The index of the last row to generate
+	 * @param {Boolean} [forceRender] if <tt><b>true</b></tt> the row is regenerated
 	 * @private
-	 * @name onyx.DynamicList#calculateRowToDisplay
+	 * @name onyx.DynamicList#renderRows
 	 */
-	calculateRowToDisplay: function() {
-		if(!this.hasNode())//If the scroller is not ready, delay the method
-			{ enyo.asyncMethod(this, "calculateRowToDisplay"); return; }
+	renderRows: function(from, to, forceRender) {
+		if(from < 0) from = 0;
+		if(to >= this.rows.length) to = this.rows.length-1;
 
-		//Get sizes
-		var top = this.getScrollBounds().top,
-			visibleHeight = this.getBounds().height;
-		
-		//Get visible rows
-		firstToDisplay = this.indexAtHeight(top)-1;//One before
-		if(firstToDisplay < 0) firstToDisplay = 0;
-		lastToDisplay = this.indexAtHeight(top+visibleHeight+1);//One after
-
-		for(var tour=firstToDisplay;tour<=lastToDisplay;tour++) {
+		for(var tour=from;tour<=to;tour++) {
 			var theRow = this.rows[tour];
-			if(!theRow.generated) {//If the row isn't generated
+			if(forceRender || !theRow.generated) {//If the row isn't generated
 				var inEvent = {context: theRow.source, template: theRow.template};//Create an inEvent object
 				this.doSetupRow(inEvent);//Send the event
 				if(enyo.isString(inEvent.template)) {//The template is a (HTML) string
@@ -177,6 +171,39 @@ enyo.kind({
 				theRow.generated = true;//set "generated" to true
 			}
 		}
+	},
+
+	/**
+	 * Load all rows
+	 * @function
+	 * @name onyx.DynamicList#loadAllRow
+	 * @param {Boolean} [forceRender] if <tt><b>true</b></tt> the row is regenerated
+	 */
+	loadAllRow: function(forceRender) {
+		this.renderRows(0, this.rows.length-1, !!forceRender);
+	},
+
+	/**
+	 * Calculate the list of the row that is displayed and generate them if needed
+	 * @function
+	 * @private
+	 * @name onyx.DynamicList#calculateRowToDisplay
+	 */
+	calculateRowToDisplay: function() {
+		if(!this.hasNode())//If the scroller is not ready, delay the method
+			{ enyo.asyncMethod(this, "calculateRowToDisplay"); return; }
+
+		//Get sizes
+		var top = this.getScrollBounds().top,
+			visibleHeight = this.getBounds().height,
+			visibleRow = Math.ceil(visibleHeight/this.avgHeight());
+		
+		//Get visible rows
+		lastToDisplay = this.indexAtHeight(top+visibleHeight+1);//One after
+		firstToDisplay = lastToDisplay-visibleRow-1;//this.indexAtHeight(top)-1;//One before
+		if(firstToDisplay < 0) firstToDisplay = 0;
+
+		this.renderRows(firstToDisplay, lastToDisplay);
 	},
 	
 	/**
@@ -217,7 +244,7 @@ enyo.kind({
 	 */
 	scrollEndHandler: function(inSender, inEvent) {
 		this.calculateRowToDisplay();
-	}
+	},
 	
 	/**
 	 * Force the redraw of a row
@@ -279,6 +306,8 @@ enyo.kind({
 		for(;tour<size;tour++) {
 			total+=this.heights[tour];
 		}
+		
+		return total;
 	},
 	
 	/**

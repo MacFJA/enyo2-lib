@@ -43,7 +43,7 @@
 				this.$.list.invalidateRow(14);
 			},
 			goBottom: function() {
-				this.$.list.$.scroller.scrollTo(0, this.$.list.$.scroller.getScrollBounds().height);
+				this.$.list.scrollTo(0, this.$.list.getScrollBounds().height);
 			},
 			rowTap: function(inSender, inEvent) {
 				console.log("onRowTap", inEvent);
