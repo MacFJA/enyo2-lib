@@ -1,0 +1,84 @@
+<!doctype html>
+<html manifest="mobile.manifest">
+<head>
+	<title>Notification</title>
+
+	<script src="http://enyojs.com/enyo-2.0b3/enyo.js" type="text/javascript" charset="utf-8"></script>
+	<script>
+		enyo.depends(
+			"http://enyojs.com/enyo-2.0b3/enyo.css",
+			"http://enyojs.com/lib/onyx/build/onyx.css",
+			"http://enyojs.com/lib/onyx/build/onyx.js"
+		);
+ 	</script>
+
+	<script src="NotificationTheme/package.js" type="text/javascript"></script>
+
+	<script src="Notification.js" type="text/javascript"></script>
+</head>
+<body>
+	<script type="text/javascript">
+		enyo.kind({
+			name: "app",
+			kind: enyo.Control,
+			components: [
+				{content: "Bezel notification style", style: "padding: 20px 20px 0 20px"},
+				{kind: "onyx.Toolbar", components: [
+					{kind: "onyx.Button", content: "Bezel normal", ontap: "bezel1"},
+					{kind: "onyx.Button", content: "Bezel, displayed 1 sec", ontap: "bezel2"},
+					{kind: "onyx.Button", content: "Bezel, no automatic hide", ontap: "bezel3"}
+				]},
+				{content: "Message bar notification style", style: "padding: 20px 20px 0 20px"},
+				{kind: "onyx.Toolbar", components: [
+					{kind: "onyx.Button", content: "Message Bar normal", ontap: "mb1"},
+					{kind: "onyx.Button", content: "Message Bar, displayed 1 sec", ontap: "mb2"},
+					{kind: "onyx.Button", content: "Message Bar, no automatic hide", ontap: "mb3"}
+				]}	,
+				{content: "Badged notification style, if one notification is wainting a badge is displayed with the number of waiting notifications", style: "padding: 20px 20px 0 20px"},
+				{kind: "onyx.Toolbar", components: [
+					{kind: "onyx.Button", content: "Badged normal", ontap: "badged1"},
+					{kind: "onyx.Button", content: "Badged, displayed 1 sec", ontap: "badged2"},
+					{kind: "onyx.Button", content: "Badged, no automatic hide", ontap: "badged3"}
+				]},
+				{content: "Pop notification style", style: "padding: 20px 20px 0 20px"},
+				{kind: "onyx.Toolbar", components: [
+					{kind: "onyx.Button", content: "Pop normal", ontap: "pop1"},
+					{kind: "onyx.Button", content: "Pop, displayed 1 sec", ontap: "pop2"},
+					{kind: "onyx.Button", content: "Pop, no automatic hide", ontap: "pop3"}
+				]},
+				{kind: "Notification", name: "notif"}
+			],
+
+			bezel1: function() { this.sendNotif("notification.Bezel"); },
+			bezel2: function() { this.sendNotif("notification.Bezel", undefined, 1); },
+			bezel3: function() { this.sendNotif("notification.Bezel", true); },
+
+			mb1: function() { this.sendNotif("notification.MessageBar"); },
+			mb2: function() { this.sendNotif("notification.MessageBar", undefined, 1); },
+			mb3: function() { this.sendNotif("notification.MessageBar", true); },
+
+			badged1: function() { this.sendNotif("notification.Badged"); },
+			badged2: function() { this.sendNotif("notification.Badged", undefined, 1); },
+			badged3: function() { this.sendNotif("notification.Badged", true); },
+
+			pop1: function() { this.sendNotif("notification.Pop"); },
+			pop2: function() { this.sendNotif("notification.Pop", undefined, 1); },
+			pop3: function() { this.sendNotif("notification.Pop", true); },
+
+			callb: function(notification) { alert("click!"); },
+
+			sendNotif: function(theme, stay, duration) {
+				this.$.notif.sendNotification({
+					title: "Test",
+					message: new Date(),
+					icon: "http://icons.iconseeker.com/png/fullsize/ivista-2-os-x-icons/warning-4.png",//http://gakuseisean.deviantart.com
+					theme: theme,
+					stay: stay,
+					duration: duration
+				}, enyo.bind(this, "callb"));
+			}
+		});
+		new app().renderInto(document.body);
+	</script>
+</body>
+</html>
