@@ -127,7 +127,7 @@ enyo.kind({
 					style: "min-height: "+this.defaultRowHeight+"px;",
 					xIndex: tour,
 					ontap: "rowTapHandler"
-				}, {onwer: this}),
+				}, {owner: this}),
 				template: (this.items[tour].template || this.rowTemplate),
 				generated: false
 			});
