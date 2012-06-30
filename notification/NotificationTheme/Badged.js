@@ -10,11 +10,11 @@
  * @name notification.Badged
  * @class
  * @author MacFJA
- * @version 1.0 (xx/04/2012)
+ * @version 1.1 (30/06/2012)
  */
 enyo.kind({
 	name: "notification.Badged",
-	kind: "enyo.Component",
+	kind: "enyo.Control",
 
 	published: {
 		/** @lends notification.Badged# */
@@ -92,8 +92,7 @@ enyo.kind({
 	 */
 	create: function() {
 		this.inherited(arguments);
-		this.$.bubble.render();//Render the node
-		document.body.appendChild(this.$.bubble.node);//Add it to body
+		this.render();//Render the node
 	},
 
 	/**
