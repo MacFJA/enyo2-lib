@@ -10,11 +10,11 @@
  * @name notification.MessageBar
  * @class
  * @author MacFJA
- * @version 1.0 (22/04/2012)
+ * @version 1.1 (30/06/2012)
  */
 enyo.kind({
 	name: "notification.MessageBar",
-	kind: "enyo.Component",
+	kind: "enyo.Control",
 
 	published: {
 		/** @lends notification.MessageBar# */
@@ -113,8 +113,7 @@ enyo.kind({
 	 */
 	create: function() {
 		this.inherited(arguments);
-		this.$.bar.render();//Render the node bar
-		document.body.appendChild(this.$.bar.node);//Add the node into the HTML body
+		this.render();
 	},
 
 	/**

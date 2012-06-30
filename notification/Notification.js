@@ -10,11 +10,11 @@
  * @name enyo.Notification
  * @class
  * @author MacFJA
- * @version 1.0 (22/04/2012)
+ * @version 1.1 (30/06/2012)
  */
 enyo.kind({
 	name: "enyo.Notification",
-	kind: "enyo.Component",
+	kind: "enyo.Control",
 
 	published: {
 		/** @lends enyo.Notification# */
@@ -133,7 +133,7 @@ enyo.kind({
 				this.pending[tour].callback(this.pending[tour].notification);//call the callback function
 				this.doTap(this.pending[tour].notification);//Send a onTap event
 				enyo.remove(this.pending[tour], this.pending);//Remove the pending notification
-				return;//End the function
+				return true;//End the function
 			}
 		}
 	},

@@ -10,11 +10,11 @@
  * @name notification.Pop
  * @class
  * @author MacFJA
- * @version 1.0 (22/04/2012)
+ * @version 1.1 (30/06/2012)
  */
 enyo.kind({
 	name: "notification.Pop",
-	kind: "enyo.Component",
+	kind: "enyo.Control",
 
 	published: {
 		/** @lends notification.Pop# */
@@ -114,9 +114,8 @@ enyo.kind({
 	 */
 	create: function() {
 		this.inherited(arguments);
-		this.$.bubble.render();//Render the node
+		this.render();//Render the node
 		this.$.bubble.applyStyle("opacity", 0);//Set default style (prevent flashing)
-		document.body.appendChild(this.$.bubble.node);//Add the node into the HTML body
 	},
 
 	/**
