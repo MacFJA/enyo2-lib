@@ -44,6 +44,12 @@
 					{kind: "onyx.Button", content: "Pop, displayed 1 sec", ontap: "pop2"},
 					{kind: "onyx.Button", content: "Pop, no automatic hide", ontap: "pop3"}
 				]},
+				{content: "PageCurl notification style, no automatic hide notifications are displayed separately from normal notification", style: "padding: 20px 20px 0 20px"},
+				{kind: "onyx.Toolbar", components: [
+					{kind: "onyx.Button", content: "PageCurl normal", ontap: "curl1"},
+					{kind: "onyx.Button", content: "PageCurl, displayed 1 sec", ontap: "curl2"},
+					{kind: "onyx.Button", content: "PageCurl, no automatic hide", ontap: "curl3"}
+				]},
 				{kind: "Notification", name: "notif"}
 			],
 
@@ -62,6 +68,10 @@
 			pop1: function() { this.sendNotif("notification.Pop"); },
 			pop2: function() { this.sendNotif("notification.Pop", undefined, 1); },
 			pop3: function() { this.sendNotif("notification.Pop", true); },
+			
+			curl1: function() { this.sendNotif("notification.PageCurl"); },
+			curl2: function() { this.sendNotif("notification.PageCurl", undefined, 1); },
+			curl3: function() { this.sendNotif("notification.PageCurl", true); },
 
 			callb: function(notification) { alert("click!"); },
 

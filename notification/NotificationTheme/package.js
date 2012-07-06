@@ -1,13 +1,16 @@
 enyo.depends(
-	"Badged.css",
+	"css/Badged.css",
 	"Badged.js",
-	
-	"Bezel.css",
+
+	"css/Bezel.css",
 	"Bezel.js",
 
-	"MessageBar.css",
+	"css/MessageBar.css",
 	"MessageBar.js",
 
-	"Pop.css",
-	"Pop.js"
+	"css/Pop.css",
+	"Pop.js",
+	
+	"css/PageCurl.css",
+	"PageCurl.js"
 );

@@ -10,7 +10,7 @@
  * @name notification.Badged
  * @class
  * @author MacFJA
- * @version 1.1 (30/06/2012)
+ * @version 1.1 (07/07/2012)
  */
 enyo.kind({
 	name: "notification.Badged",
@@ -40,7 +40,7 @@ enyo.kind({
 		onTap: "",
 
 		/**
-		 * Inform that the notification is closed (by a tap or not)
+		 * Inform that the notification is closed (without user action)
 		 * @event
 		 * @param {Object} inSender Event's sender
 		 * @param {Object} inEvent <tt>inEvent.notification</tt> contains the notification object passed in the <q>newNotification</q> method and <tt>inEvent.uid</tt> the uid
