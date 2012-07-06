@@ -7,6 +7,21 @@
 
 /**
  * Dynamic loaded list
+ * <hr />
+ * <h2>Notification format</h2>
+ * Notification send with enyo.Notification#sendNotification respect the format :
+ * <ul>
+ *  <li><code>title</code>: The title of the notification (The main information)</li>
+ *  <li><code>message</code>: The message of the notification (A description/explanation)</li>
+ *  <li><code>icon</code>: The icon of the notification (ex. warning icon, stop icon)</li>
+ *  <li><code>duration</code>: How long did the notification stay on screen (in seconds)</li>
+ *  <li><code>stay</code>: if <code>true</code> the notification will disappear only if user click on it</li>
+ *  <li><code>theme</code>: The name of the theme to use to render notification</li>
+ * </ul>
+ * Example :
+ * <pre>{title: "Alert", message: "Your battery is low", icon: "battery-low.png", stay: true, theme: "notification.Pop"}</pre>
+ * <pre>{title: "Sync", message: "Your data have been synced", icon: "sync.png", theme: "notification.MessageBar"}</pre>
+ * <pre>{title: "Sound", message: "The music is muted", icon: "sound-mute.png"}</pre>
  * @name enyo.Notification
  * @class
  * @author MacFJA

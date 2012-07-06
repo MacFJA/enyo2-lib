@@ -9,5 +9,8 @@ enyo.depends(
 	"MessageBar.js",
 
 	"css/Pop.css",
-	"Pop.js"
+	"Pop.js",
+	
+	"css/PageCurl.css",
+	"PageCurl.js"
 );
