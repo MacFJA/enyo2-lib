@@ -160,8 +160,7 @@ enyo.kind({
 		this.inherited(arguments);
 		this.strategyKindChanged();
 		this.animationDurationChanged();
-		//enyo.asyncMethod(this, "contentChanged");
-		this.contentChanged();
+		enyo.asyncMethod(this, "contentChanged");
 	},
 
 	/**

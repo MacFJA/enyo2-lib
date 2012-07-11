@@ -29,6 +29,27 @@ onyx.NavigationBar
 ------------------
 > A navigation bar (path bar) control
 
+onyx.Marquee
+------------
+> A text control, that can slide if the text is too long
+
+onyx.Notification
+-----------------
+> A notification center, inspered by Growl and other  
+> Available theme : **Bezel, Message Bar, Pop, Badged, PageCurl**
+
+onyx.DynamicList
+----------------
+> A list that load only visible row
+
+onyx.GradientSlider
+-------------------
+> Simple extension to slider, that provide gradient display (red to green)
+
+onyx.CustomGradientSlider
+-------------------------
+> Simple extension to slider, that provide custom background
+
 ----
 Documentations
 ==============
