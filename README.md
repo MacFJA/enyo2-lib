@@ -50,6 +50,11 @@ onyx.CustomGradientSlider
 -------------------------
 > Simple extension to slider, that provide custom background
 
+onyx.Folding
+------------
+> Fold and unfold part of page.
+> Inspered by WebOS Calendar
+
 ----
 Documentations
 ==============
