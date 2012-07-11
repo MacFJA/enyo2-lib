@@ -1,0 +1,47 @@
+<html>
+<head>
+	<title>Onyx : Folding Example</title>
+	<script src="http://enyojs.com/enyo-2.0b5/enyo.js" type="text/javascript" charset="utf-8"></script>
+	<script>
+		enyo.depends(
+			"http://enyojs.com/enyo-2.0b5/enyo.css",
+			"http://enyojs.com/lib/onyx/",
+			"sources/Folding.js",
+			"css/Folding.css"
+		);
+	</script>
+	<style>
+		body {
+			background: #E1E1E1;
+		}
+	</style>
+</head>
+<body>
+<script type="text/javascript">
+	enyo.kind({
+		name: "testeur",
+		kind: "enyo.Control",
+	
+		components: [
+			{kind: "onyx.Folding", name: "fold", label: "Lorem", components: [
+				{kind: "onyx.Button", content: "Example button", ontap: "alert"},
+				{style: "font-size: 18px", content: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."},
+				{style: "font-size: 20px; background: red", content: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."},
+				{style: "font-size: 22px; background: blue", content: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."}
+			]},
+			{kind: "onyx.Button", content: "Fold", ontap: "fold"},
+			{kind: "onyx.Button", content: "unFold", ontap: "unfold"},
+			{kind: "onyx.Button", content: "Toggle folding", ontap: "toggle"}
+		],
+		
+		alert: function() { alert("I'm an example button"); },
+		
+		fold: function() { this.$.fold.fold(); },
+		unfold: function() { this.$.fold.unfold(); },
+		toggle: function() { this.$.fold.toogleFold(); }
+	});
+	var a = new testeur();
+	a.write();
+</script>
+</body>
+</html>
