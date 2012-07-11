@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+<head>
+	<title>Onyx : UpDown sample</title>
+	<script src="http://enyojs.com/enyo-2.0b5/enyo.js" type="text/javascript"></script>
+	<script>
+		enyo.depends(
+			"http://enyojs.com/enyo-2.0b5/enyo.css",
+			"http://enyojs.com/lib/onyx/",
+			"sources/Marquee.js",
+			"sources/MarqueeHorizontalStrategy.js",
+			"sources/MarqueeVerticalStrategy.js",
+			"css/Marquee.css"
+		);
+		
+	</script>
+	<style>
+		.marquee-min-v {
+			width: 200px;
+			background: red;
+			height: 32px;
+			margin: 40px;
+			padding: 6px;
+		}
+	
+		.marquee-min-h {
+			width: 300px;
+			background: #0F8;
+			padding: 6px;
+			margin: 40px;
+	}
+	</style>
+</head>
+<body>
+	<script>
+		new (enyo.kind({
+			name: "App",
+			kind: "Control",
+			components: [
+				{content: "Marquee, Horizontal Strategy (default)", style: "margin: 10px;"},
+				{kind: "onyx.Marquee", name: "marquee1", classes: "marquee-min-h"},
+				{content: "Marquee, Vertical Strategy", style: "margin: 10px;"},
+				{kind: "onyx.Marquee", name: "marquee2", strategyKind: "MarqueeVerticalStrategy", classes: "marquee-min-v"},
+				{content: "Set content", style: "margin: 10px;"},
+				{kind: "onyx.Button", name: "setLong", content: "Set long text", ontap: "setText"},
+				{kind: "onyx.Button", name: "setShort", content: "Set short text", ontap: "setText"},
+				{content: "Animation control", style: "margin: 10px;"},
+				{kind: "onyx.Button", name: "playPause", content: "Stop", ontap: "playPause"},
+			],
+			
+			isPlay: true,
+
+			create: function() {
+				this.inherited(arguments);
+				this.setText(this.$.setLong);
+			},
+
+			setText: function(inSender) {
+				var text = "";
+				if(inSender == this.$.setLong)  text = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+				if(inSender == this.$.setShort) text = "My not so long text";
+
+				this.$.marquee1.setContent(text);
+				this.$.marquee2.setContent(text);
+			},
+
+			playPause: function() {
+				if(this.isPlay) {
+					this.$.playPause.setContent("Play");
+					this.$.marquee1.stop();
+					this.$.marquee2.stop();
+				}
+				else {
+					this.$.playPause.setContent("Stop");
+					this.$.marquee1.start();
+					this.$.marquee2.start();
+				}
+
+				this.isPlay = !this.isPlay;
+			}
+		}))().write();
+	</script>
+</body>
+</html>
