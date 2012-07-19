@@ -10,7 +10,7 @@
  * @name onyx.Folding
  * @class
  * @author MacFJA
- * @version 1.0 (12/07/2012)
+ * @version 1.1 (19/07/2012)
  */
 enyo.kind({
 	name: "onyx.Folding",
@@ -44,6 +44,18 @@ enyo.kind({
 		folding: false
 	},
 	
+	events: {
+		/** @lends onyx.Folding# */
+		/**
+		 * Inform that the label have been tapped
+		 * @event
+		 * @param {Object} inSender Event's sender
+		 * @param {Object} inEvent The event
+		 * @name onyx.Folding#onLabelTap
+		 */
+		onLabelTap: ""
+	},
+	
 	/**
 	 * Components of the control
 	 * @ignore
@@ -51,7 +63,7 @@ enyo.kind({
 	 */
 	components: [
 		{name: "client"},
-		{name: "folding", classes: "onyx-folding-volume", showing: false, components: [{name: "label", classes: "onyx-folding-label"}]},
+		{name: "folding", classes: "onyx-folding-volume", showing: false, components: [{name: "label", classes: "onyx-folding-label", ontap: "labelTapHandler"}]},
 		{name: "left", classes:"onyx-folding-left", showing: false},
 		{name: "right", classes:"onyx-folding-right", showing: false},
 		{kind: "Animator", startValue: 0, endValue: 1, onStep: "foldStep", name: "foldAnimator",   onEnd: "animatorEnd"},
@@ -91,11 +103,20 @@ enyo.kind({
 		}
 	},
 	/**
-	 * initialize view on launch (don't use it!)
+	 * Handler for <q>onTap</q> event of label
 	 * @function
 	 * @private
 	 */
-	_startupfold: function() {
+	labelTapHandler: function(inSender, inEvent) {
+		this.doLabelTap(inEvent);
+		return true;
+	},
+	/**
+	 * make a folding without animation
+	 * @function
+	 * @private
+	 */
+	unAnimatedFolding: function() {
 		if(this.folding) {
 			this.$.folding.show();
 			this.$.left.show();
@@ -121,26 +142,47 @@ enyo.kind({
 	 */
 	create: function() {
 		this.inherited(arguments);
-		this._startupfold();
+		this.unAnimatedFolding();
 		this.durationChanged();
 		this.labelChanged();
 	},
 
 	/**
+	 * Change the folding, without animation
+	 * @function
+	 * @param {Boolean} newValue The new folding value
+	 * @name onyx.Folding#setUnAnimatedFolding
+	 */
+	setUnAnimatedFolding: function(newValue) {
+		this.folding = newValue;
+		this.unAnimatedFolding();
+	},
+
+	/**
 	 * Alias of setFolding(true)
 	 * @function
+	 * @param {Boolean} [animated=true] if <code>true</code> the folding is animated
 	 * @name onyx.Folding#fold
 	 */
-	fold: function() {
+	fold: function(animated) {
+		if(animated && animated === false) {
+			this.folding = true;
+			this.unAnimatedFolding();
+		}
 		this.setFolding(true);
 	},
 	
 	/**
 	 * Alias of setFolding(false)
 	 * @function
+	 * @param {Boolean} [animated=true] if <code>true</code> the folding is animated
 	 * @name onyx.Folding#unfold
 	 */
-	unfold: function() {
+	unfold: function(animated) {
+		if(animated && animated === false) {
+			this.folding = false;
+			this.unAnimatedFolding();
+		}
 		this.setFolding(false);
 	},
 
