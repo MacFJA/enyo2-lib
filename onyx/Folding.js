@@ -165,7 +165,7 @@ enyo.kind({
 	 * @name onyx.Folding#fold
 	 */
 	fold: function(animated) {
-		if(animated && animated === false) {
+		if(animated != undefined && animated == false) {
 			this.folding = true;
 			this.unAnimatedFolding();
 		}
@@ -179,7 +179,7 @@ enyo.kind({
 	 * @name onyx.Folding#unfold
 	 */
 	unfold: function(animated) {
-		if(animated && animated === false) {
+		if(animated != undefined && animated == false) {
 			this.folding = false;
 			this.unAnimatedFolding();
 		}
@@ -208,9 +208,18 @@ enyo.kind({
 	
 	/**
 	 * Reverse the actual value of folding
+	 * @function
+	 * @param {Boolean} [animated=true] if <code>true</code> the folding is animated
+	 * @name onyx.Folding#toogleFold
 	 */
-	toogleFold: function() {
-		this.setFolding(!this.folding);
+	toogleFold: function(animated) {
+		var newFoldingValue = !this.folding;
+		
+		if(animated != undefined && animated == false) {
+			this.folding = newFoldingValue;
+			this.unAnimatedFolding();
+		}
+		this.setFolding(newFoldingValue);
 	},
 
 	/**
