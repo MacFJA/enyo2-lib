@@ -10,14 +10,13 @@
  * @name onyx.Marquee
  * @class
  * @author MacFJA
- * @version 1.0 (12/07/2012)
+ * @version 1.1 (22/07/2012)
  */
 enyo.kind({
 	name: "onyx.Marquee",
 	kind: "enyo.Control",
 
 	classes: "onyx-marquee",
-
 	
 	published: {
 		/** @lends onyx.Marquee# */
@@ -66,6 +65,18 @@ enyo.kind({
 			{kind: "enyo.Control", name: "second", content: "b", classes: "onyx-marquee-second", showing: false}
 		]}
 	],
+	
+	/**
+	 * Events handled by the control
+	 * @ignore
+	 * @type Object
+	 */
+	handlers: {
+		/**
+		 * Resizing event, send by Enyo
+		 */
+		onresize: "resize"
+	},
 
 	/** @lends onyx.Marquee# */
 
@@ -164,6 +175,15 @@ enyo.kind({
 	},
 
 	/**
+	 * Handler for <q>onResize</q> event send by Enyo
+	 * @private
+	 */
+	resize: function() {
+		this.inherited(arguments);
+		this.contentChanged();
+	},
+
+	/**
 	 * Handler for <q>animationDuration</q> value change
 	 * @private
 	 */
@@ -174,7 +194,6 @@ enyo.kind({
 		this.$.second.setContent(this.content);
 		
 		if(this.autoStart) this.start();
-
 	},
 
 	/**
