@@ -47,7 +47,9 @@ enyo.kind({
 		 * @type Number
 		 * @default null
 		 */
-		maxRows: null
+		maxRows: null,
+		minCols: 5,
+		maxCols: null
 	},
 
 	events: {
@@ -75,6 +77,7 @@ enyo.kind({
 	 * @type Number
 	 */
 	rowsCount: 2,
+	colsCount: 5,
 	
 	/**
 	 * create function, init the object
@@ -90,17 +93,21 @@ enyo.kind({
 	 */
 	doResize: function() {
 		var lastRowsCount = this.rowsCount;
+		var lastColsCount = this.colsCount;
 		this.setAttribute("rows", this.minRows);
+		this.setAttribute("cols", this.minCols);
 		this.rowsCount = this.minRows;
-		
+		this.colsCount = this.minCols;
 		if(!this.hasNode() || !this.autoResize)
 		{
 			if(this.rowsCount != lastRowsCount)
 				{ this.doSizeChange({before: lastRowsCount, now: this.rowsCount}); }
+			if(this.colsCount != lastColsCount)
+				{ this.doSizeChange({before: lastColsCount, now: this.colsCount}); }
 			return;
 		}
 
-		var node = this.node;
+		var node = this.hasNode();
 
 		while(
 			node.clientHeight < node.scrollHeight &&
@@ -109,9 +116,17 @@ enyo.kind({
 			this.rowsCount++;
 			this.setAttribute("rows", this.rowsCount);
 		}
-
+		while(
+			node.clientWidth < node.parentNode.clientWidth &&
+			(!this.maxCols || this.colsCount < this.maxCols)
+		) {
+			this.colsCount++;
+			this.setAttribute("cols", this.colsCount);
+		}
 		if(this.rowsCount != lastRowsCount)
 			{ this.doSizeChange(lastRowsCount, this.rowsCount); }
+		if(this.colsCount != lastColsCount)
+				{ this.doSizeChange({before: lastColsCount, now: this.colsCount}); }
 	},
 	/**
 	 * Handler for <q>minRows</q> value change
@@ -145,6 +160,16 @@ enyo.kind({
 	 */
 	input: function() {
 		this.inherited(arguments);
+		this.doResize();
+	},
+	minColsChanged: function() {
+		if(this.minCols < 1)
+			{ this.minCols = 1; }
+		this.doResize();
+	},
+	maxColsChanged: function() {
+		if(this.maxCols < this.minCols)
+			{ this.maxCols = this.minCols; }
 		this.doResize();
 	}
 });
