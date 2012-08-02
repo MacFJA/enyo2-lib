@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+	<title>Onyx : GrowTextBox sample</title>
+	<script src="http://enyojs.com/enyo-2.0/enyo.js" type="text/javascript"></script>
+	<script>
+		enyo.depends(
+			"http://enyojs.com/enyo-2.0/enyo.css",
+			"sources/GrowTextBox.js"
+		);
+		
+	</script>
+</head>
+<body>
+	<script>
+		enyo.kind({
+			name: "app",
+			components: [
+				{content: "GrowTextBox with only vertical resizing (min: 2 rows, max: 4 rows)"},
+				{kind: "enyo.GrowTextBox", maxRows: 4, maxCols: NaN},
+				{tag: "hr"},
+				{content: "GrowTextBox with only horizontal resizing (min: 1 cols, max: 40 cols)"},
+				{kind: "enyo.GrowTextBox", maxRows: NaN, maxCols: 40},
+				{tag: "hr"},
+				{content: "GrowTextBox with horizontal and vertical resizing (min: 2 rows and 1 cols, max: 4 rows and 30 cols)"},
+				{kind: "enyo.GrowTextBox", maxRows: 4, maxCols: 30},
+				{tag: "hr"},
+				{content: "GrowTextBox with no resizing"},
+				{kind: "enyo.GrowTextBox", maxRows: NaN, maxCols: NaN},
+				{content: "GrowTextBox with vertical resizing and no limite (min: 3 rows, max: none)"},
+				{kind: "enyo.GrowTextBox", maxRows: Infinity, minRows: 3, maxCols: NaN}
+			],
+		});
+
+		var a = new app();
+		a.write();
+	</script>
+</body>
+</html>
