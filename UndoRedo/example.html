@@ -1,0 +1,68 @@
+<html>
+<head>
+<title>Enyo : UndoRedo sample</title>
+<script src="http://enyojs.com/enyo/enyo.js" type="text/javascript" charset="utf-8"></script>
+<script src="UndoRedo.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+<script type="text/javascript">
+	enyo.kind({
+		name: "testeur",
+		kind: "enyo.Control",
+		
+		published: {
+			part1: "Hello",
+			part2: "world"
+		},
+	
+		part1Changed: function() {
+			this.$.preview.setContent(this.part1+" - "+this.part2);
+		},
+		part2Changed: function() {
+			this.$.preview.setContent(this.part1+" - "+this.part2);
+		},
+	
+		components: [
+			{name: "preview", classes: "preview"},
+			{tag: "hr"},
+			{kind: "enyo.Input", name: "part1"},
+			{kind: "enyo.Button", content: "Change first part", ontap: "changePart1"},
+			{tag: "br"},
+			{kind: "enyo.Input", name: "part2"},
+			{kind: "enyo.Button", content: "Change second part", ontap: "changePart2"},
+			{tag: "hr"},
+			{kind: "enyo.Button", name: "undoB", content: "Undo", ontap: "doUndoRedo"},
+			{kind: "enyo.Button", name: "redoB", content: "Redo", ontap: "doUndoRedo"}
+		],
+	
+		doUndoRedo: function(inSender) {
+			if (inSender == this.$.undoB) {
+				this.undo();
+			}
+			else {
+				this.redo();
+			}
+		},
+	
+		create: function() {
+			this.inherited(arguments);
+			
+			enyo.UndoRedo.add(this, "part1");
+			enyo.UndoRedo.add(this, "part2");
+			
+			this.part1Changed();
+		},
+		
+		changePart1: function() {
+			this.setPart1(this.$.part1.getValue());
+		},
+		
+		changePart2: function() {
+			this.setPart2(this.$.part2.getValue());
+		}
+	});
+	var a = new testeur();
+	a.write();
+</script>
+</body>
+</html>
