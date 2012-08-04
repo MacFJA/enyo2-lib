@@ -62,6 +62,8 @@ enyo.kind({
 		 */
 		onSizeChange: ""
 	},
+	/** @lends onyx.TextArea# */
+	
 	/**
 	 * The node tag name
 	 * @private
@@ -100,7 +102,7 @@ enyo.kind({
 			return;
 		}
 
-		var node = this.node;
+		var node = this.hasNode();
 
 		while(
 			node.clientHeight < node.scrollHeight &&
@@ -123,7 +125,7 @@ enyo.kind({
 		this.doResize();
 	},
 	/**
-	 * Handler dor <q>maxRows</1> value change
+	 * Handler dor <q>maxRows</q> value change
 	 * @private
 	 */
 	maxRowsChanged: function() {

@@ -11,7 +11,8 @@ localize
 
 onyx.TextArea
 -------------
-> Simple object for textarea, with vertical auto-resize
+> Simple object for textarea, with vertical auto-resize  
+> _**GrowTextBox** is a better addon, please use it ;)_
 
 onyx.LevelProgress
 ------------------
@@ -52,8 +53,16 @@ onyx.CustomGradientSlider
 
 onyx.Folding
 ------------
-> Fold and unfold part of page.
+> Fold and unfold part of page.  
 > Inspered by WebOS Calendar
+
+enyo.GrowTextBox
+----------------
+> Automatic resizing text area (vertical or horizontal or both or none)
+
+enyo.UndoRedo
+-------------
+> Add to Component the ability to undone properties change
 
 ----
 Documentations
