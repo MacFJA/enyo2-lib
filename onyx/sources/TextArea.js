@@ -100,7 +100,7 @@ enyo.kind({
 			return;
 		}
 
-		var node = this.node;
+		var node = this.hasNode();
 
 		while(
 			node.clientHeight < node.scrollHeight &&

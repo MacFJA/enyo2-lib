@@ -10,7 +10,7 @@
  * @name enyo.UndoRedo
  * @class
  * @author MacFJA
- * @version 1.0 (22/07/2012)
+ * @version 1.0 (04/08/2012)
  */
 enyo.kind({
 	name: "enyo.UndoRedo",
