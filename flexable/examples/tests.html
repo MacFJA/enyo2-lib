@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>layout.Flexable Tests</title>
+	<!-- -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- -->
+	<script src="http://enyojs.com/enyo-2.0/enyo.js" type="text/javascript"></script>
+	<script src="http://enyojs.com/enyo-2.0/lib/layout/package.js" type="text/javascript"></script>
+	<script src="../package.js" type="text/javascript"></script>
+	<!-- -->
+	<style>
+		body {
+			font-family: sans-serif;
+		}
+		p {
+			padding: 1em;
+			font-size: 1.2em;
+		}
+		.box {
+			border: 0.1em solid lightblue;
+			padding: 3pt;
+		}
+		.b {
+			background-color: #F1FFF1;
+		}
+		.mtb {
+			margin-top: 0.5rem;
+			margin-bottom: 1%;
+		}
+		.mlr {
+			margin-left: 0.5em;
+			margin-right: 0.5em;
+		}
+		.o {
+			border-color: orange;
+		}
+
+		.boxable {
+			margin: 0.5em;
+			padding: 1em;
+			border: 0.2em solid beige;
+		}
+
+		.boxable > * {
+			border: 0.1em dotted orange;
+			padding: 0.5em;
+		}
+
+		.test {
+			border-width: 0.2em;
+			border-color: red;
+		}
+
+		.small-test {
+			border-width: 0.2em;
+			border-color: red;
+			height: 150px;
+		}
+
+		.section {
+			padding: 30px 10px 10px;
+			font-weight: bold;
+		}
+	</style>
+</head>
+<body class="onyx">
+<script type="text/javascript">
+	
+	new (enyo.kind({
+		name: "App",
+		kind: "Scroller",
+		components: [
+			{classes: "section", content: "Rows/Columns using a combination of css units and highlighting margin collapse"},
+			{kind: "layout.FlexableRows", classes: "box test", style: "height: 400px;", components: [
+				{content: "FOO<br>margin-bottom: 1em", allowHtml: true, classes: "box mlr mtb", style: "margin-bottom: 1em;"},
+				{content: "margin-top: 1em (collapsed since sibling shows greater of previous bottom and this top)<br>FOO", allowHtml: true, classes: "box mlr mtb", style: "margin-top: 1em;"},
+				{content: "FOO<br>FOO", allowHtml: true, classes: "box mlr mtb"},
+				{kind: "layout.FlexableColumns", flex: 1, classes: "box mtb mlr o", components: [
+					{content: "111111111111111", classes: "box mlr"},
+					{content: "111111111111111", classes: "box mlr"},
+					{content: "2", flex: 1, classes: "box mlr o"},
+					{content: "3333333", classes: "box mlr"}
+				]},
+				{kind: "layout.FlexableColumns", content: "Bat", classes: "box mtb enyo-center", components: [
+					{content: "add enyo-center to layout.FlexableColumns", classes: "box mlr"},
+					{content: "1", classes: "box mlr"},
+					{content: "2", classes: "box mlr"},
+					{content: "3", classes: "box mlr"},
+					{content: "4", classes: "box mlr"},
+					{content: "5", classes: "box mlr"}
+				]}
+			]},
+			{classes: "section", content: "Rows with enyo-margin-expand to avoid margin-collapse"},
+			{kind: "layout.FlexableRows", classes: "box test enyo-margin-expand", style: "height: 250px;", components: [
+				{content: "FOO<br>margin-bottom: 1em", allowHtml: true, classes: "box mtb", style: "margin-bottom: 1em;"},
+				{content: "margin-top: 3em (not collapsed due to enyo-margin-expand on box)<br>FOO", allowHtml: true, classes: "box mtb", style: "margin-top: 3em;"},
+				{content: "FOO<br>FOO", allowHtml: true, flex: 1, classes: "box mtb"}
+			]},
+			{classes: "section", content: "Tests to ensure fit region can be first, middle, or last"},
+			{kind: "layout.FlexableRows", classes: "boxable small-test", components: [
+				{content: "A", flex: 1},
+				{content: "B"},
+				{content: "C"},
+			]},
+			{kind: "layout.FlexableRows", classes: "boxable small-test", components: [
+				{content: "A"},
+				{content: "B", flex: 1},
+				{content: "C"},
+			]},
+			{kind: "layout.FlexableRows", classes: "boxable small-test", components: [
+				{content: "A"},
+				{content: "B"},
+				{content: "C", flex: 1},
+			]},
+			{kind: "layout.FlexableColumns", classes: "boxable small-test", components: [
+				{content: "A", flex: 1},
+				{content: "B"},
+				{content: "C"},
+			]},
+			{kind: "layout.FlexableColumns", classes: "boxable small-test", components: [
+				{content: "A"},
+				{content: "B", flex: 1},
+				{content: "C"},
+			]},
+			{style: "height: 200px;", kind: "layout.FlexableColumns", classes: "boxable small-test", components: [
+				{content: "A"},
+				{content: "B"},
+				{content: "C", flex: 1},
+			]},
+			{style: "height: 200px;", kind: "layout.FlexableColumns", classes: "boxable small-test", components: [
+				{content: "A (flex: 1)", flex: 1},
+				{content: "B"},
+				{content: "C (flex: 3)", flex: 3},
+			]},
+			{classes: "section", content: "Tests for noStretch: true"},
+			{kind: "layout.FlexableRows", classes: "box test", style: "height: 400px;", noStretch: true, components: [
+				{content: "FOO<br>margin-bottom: 1em", allowHtml: true, classes: "box mlr mtb", style: "margin-bottom: 1em;"},
+				{content: "margin-top: 2em (not collapsed; stretch false does not collapse due to use of float)<br>FOO", allowHtml: true, classes: "box mlr mtb", style: "margin-top: 1em;"},
+				{content: "FOO<br>FOO", allowHtml: true, classes: "box mlr mtb"},
+				{kind: "layout.FlexableColumns", flex: 1, noStretch: true, classes: "box mtb mlr o", components: [
+					{content: "111111111111111", classes: "box mlr"},
+					{content: "111111111111111", classes: "box mlr"},
+					{content: "2<br>2", allowHtml: true, flex: 1, classes: "box mlr o"},
+					{content: "3333333", classes: "box mlr"}
+				]},
+				{kind: "layout.FlexableColumns", content: "Bat", noStretch: true, classes: "box mtb enyo-center", components: [
+					{content: "add enyo-center to layout.FlexableColumns", classes: "box mlr"},
+					{content: "1", classes: "box mlr"},
+					{content: "2", classes: "box mlr"},
+					{content: "3", classes: "box mlr"},
+					{content: "4", classes: "box mlr"},
+					{content: "5", classes: "box mlr"}
+				]}
+			]},
+		]
+	}))({flex: 1}).write();
+	
+	/*
+	new (enyo.kind({
+		name: "App",
+		kind: "layout.FlexableColumns",
+		classes: "box mtb o",
+		stretch: true,
+		components: [
+			{content: "111111111111111", classes: "box mlr"},
+			{content: "111111111111111", classes: "box mlr"},
+			{content: "2", flex: 1, classes: "box mlr o"},
+			{content: "3333333", classes: "box mlr"}
+		]
+	}))({flex: 1}).write();
+	*/
+</script>
+</body>
+</html>
