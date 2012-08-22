@@ -10,7 +10,7 @@
  * @name enyo.UndoRedo
  * @class
  * @author MacFJA
- * @version 1.0 (04/08/2012)
+ * @version 1.1 (22/08/2012)
  */
 enyo.kind({
 	name: "enyo.UndoRedo",
@@ -69,6 +69,9 @@ enyo.kind({
 						//Remove all unneccesary history
 						while (this.selected != -1 && this.selected < this.history.length-1) {
 							this.history.pop();
+						}
+						if (this.selected == -1) {
+							this.history = [];
 						}
 						//Add this change
 						this.history.push(inName);
@@ -239,14 +242,13 @@ enyo.kind({
 	save: function(inValue) {
 		var selectedValue = this.getSelected();
 		if (
-			selectedValue && (
 			//Protect from undo/redo
 			inValue == selectedValue ||
 			//Protect saving from object than don't implement compareTo
 			typeof(inValue) == "object" && !inValue.compareTo ||
 			//Protect from undo/redo of object
 			typeof(inValue) == "object" && inValue.compareTo(selectedValue)
-		)) {
+		) {
 			return false;
 		}
 
