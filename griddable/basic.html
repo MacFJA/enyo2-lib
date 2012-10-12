@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>layout.Griddable Basic Use</title>
+	<!-- -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- -->
+	<script src="http://enyojs.com/enyo/enyo.js" type="text/javascript"></script>
+	<!-- <script src="enyo.js" type="text/javascript"></script> -->
+	<script src="GriddableLayout.js" type="text/javascript"></script>
+	<script src="Griddable.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="Griddable.css" type="text/css" media="screen" charset="utf-8">
+	<!-- -->
+	<style>
+		body {
+			font-family: sans-serif;
+		}
+		.box {
+			border: 2px solid lightblue;
+			padding: 4px;
+		}
+		.mtb {
+			margin-top: 3px;
+			margin-bottom: 3px;
+		}
+		.mlr {
+			margin-left: 6px;
+			margin-right: 6px;
+		}
+	</style>
+</head>
+<body class="onyx">
+<script type="text/javascript">
+	
+	new (enyo.kind({
+		name: "App",
+		kind: "Griddable",
+		cols: 2,
+		classes: "box mtb mlr",
+		components: [
+			{content: "FOO<br>FOO", allowHtml: true, classes: "box mtb"},
+			{content: "FOO<br>FOO", allowHtml: true, classes: "box mtb"},
+			{content: "FOO<br>FOO", allowHtml: true, classes: "box mtb"},
+			{classes: "box mtb", components: [
+				{content: "1", classes: "box mlr"},
+				{content: "2 (enyo)", classes: "box mlr"},
+				{content: "3", classes: "box mlr"},
+				{content: "4", classes: "box mlr"}
+			]},
+			{content: "Bat", classes: "box mtb enyo-center", components: [
+				{content: "Centered boxes", classes: "box mlr"},
+				{content: "1", classes: "box mlr"},
+				{content: "2", classes: "box mlr"},
+				{content: "3", classes: "box mlr"},
+				{content: "4", classes: "box mlr"},
+				{content: "5", classes: "box mlr"}
+			]},
+			{classes: "box mtb", components: [
+				{kind: "Button", content: "1 column", onclick: "col1"},
+				{kind: "Button", content: "2 columns", onclick: "col2"},
+				{kind: "Button", content: "3 columns", onclick: "col3"},
+				{kind: "Button", content: "4 columns", onclick: "col4"},
+				{kind: "Button", content: "5 columns", onclick: "col5"},
+			]}
+		],
+		col1: function() { this.cols = 1; this.reflow(); },
+		col2: function() { this.cols = 2; this.reflow(); },
+		col3: function() { this.cols = 3; this.reflow(); },
+		col4: function() { this.cols = 4; this.reflow(); },
+		col5: function() { this.cols = 5; this.reflow(); },
+	}))().renderInto(document.body);
+</script>
+</body>
+</html>
