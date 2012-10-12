@@ -1,0 +1,10 @@
+.GriddableLayout {
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+}
+.GriddableLayout > * {
+	display: inline-block;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	vertical-align: top;
+}
