@@ -10,7 +10,7 @@
  * @name notification.Pop
  * @class
  * @author MacFJA
- * @version 1.1 (07/07/2012)
+ * @version 1.2 (27/09/2013)
  */
 enyo.kind({
 	name: "notification.Pop",
@@ -253,6 +253,37 @@ enyo.kind({
 			else {
 				this.displayNotification();//Display the next notification
 			}
+		}
+	},
+	
+	/**
+	 * Remove a notification
+	 * @function
+	 * @name notification.Pop#removeNotification
+	 * @param {Int} The uid of the notification to remove
+	 */
+	removeNotification: function( uid) {
+		if(uid == this.pending[0].uid) {
+			this.hideNotification(true);
+		}
+		
+		enyo.remove(this.getNotificationFromUid(uid), this.pending);
+	},
+	
+	/**
+	 * Return a notification by a its Uid
+	 * @function
+	 * @private
+	 * @returns A notification
+	 * @param {Int} uid The Uid of the notification
+	 * @name notification.Pop#getNotificationFromUid
+	 */
+	getNotificationFromUid: function(uid) {
+		var lap = 0,
+			total = this.pending.length;
+			
+		for(;lap<total;lap++) {
+			if(this.pending[lap].uid == uid) return this.pending[lap];
 		}
 	}
 });

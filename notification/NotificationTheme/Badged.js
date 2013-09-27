@@ -10,7 +10,7 @@
  * @name notification.Badged
  * @class
  * @author MacFJA
- * @version 1.1 (07/07/2012)
+ * @version 1.2 (27/09/2013)
  */
 enyo.kind({
 	name: "notification.Badged",
@@ -185,5 +185,44 @@ enyo.kind({
 	 */
 	upNotif: function() {
 		return this.fifo?this.pending[0]:this.pending[this.pending.length-1];
+	},
+	
+	/**
+	 * Remove a notification
+	 * @function
+	 * @name notification.Badged#removeNotification
+	 * @param {Int} The uid of the notification to remove
+	 */
+	removeNotification: function(uid) {
+		var lap = 0,
+			total = this.pending.length;
+			
+		for(;lap<total;lap++) {
+			if(this.upNotif().uid == uid) {
+				this.hideNotification(true);
+			}
+			else {
+				enyo.remove(this.getNotificationFromUid(uid), this.pending);
+				this.$.badge.setContent(this.pending.length);
+				this.$.badge.setShowing(this.pending.length > 1);
+			}
+		}
+	},
+	
+	/**
+	 * Return a notification by a its Uid
+	 * @function
+	 * @private
+	 * @returns A notification
+	 * @param {Int} uid The Uid of the notification
+	 * @name notification.Badged#getNotificationFromUid
+	 */
+	getNotificationFromUid: function(uid) {
+		var lap = 0,
+			total = this.pending.length;
+			
+		for(;lap<total;lap++) {
+			if(this.pending[lap].uid == uid) return this.pending[lap];
+		}
 	}
 });

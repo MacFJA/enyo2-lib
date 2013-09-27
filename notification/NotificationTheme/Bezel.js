@@ -10,7 +10,7 @@
  * @name notification.Bezel
  * @class
  * @author MacFJA
- * @version 1.1 (07/07/2012)
+ * @version 1.2 (27/09/2013)
  */
 enyo.kind({
 	name: "notification.Bezel",
@@ -208,6 +208,37 @@ enyo.kind({
 					(this.pending[0].notification.duration)?this.pending[0].notification.duration*1000:this.defaultDuration
 				);
 			}
+		}
+	},
+
+	/**
+	 * Remove a notification
+	 * @function
+	 * @name notification.Bezel#removeNotification
+	 * @param {Int} The uid of the notification to remove
+	 */
+	removeNotification: function(uid) {
+		if(uid == this.pending[0].uid) {
+			this.hideNotification(true);
+		}
+
+		enyo.remove(this.getNotificationFromUid(uid), this.pending);
+	},
+
+	/**
+	 * Return a notification by a its Uid
+	 * @function
+	 * @private
+	 * @returns A notification
+	 * @param {Int} uid The Uid of the notification
+	 * @name notification.Bezel#getNotificationFromUid
+	 */
+	getNotificationFromUid: function(uid) {
+		var lap = 0,
+			total = this.pending.length;
+
+		for(;lap<total;lap++) {
+			if(this.pending[lap].uid == uid) return this.pending[lap];
 		}
 	}
 });

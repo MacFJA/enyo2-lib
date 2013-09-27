@@ -10,7 +10,7 @@
  * @name notification.PageCurl
  * @class
  * @author MacFJA
- * @version 1.0 (07/07/2012)
+ * @version 1.1 (27/09/2013)
  */
 enyo.kind({
 	name: "notification.PageCurl",
@@ -99,6 +99,7 @@ enyo.kind({
 	 */
 	components: [
 		{kind: "enyo.Animator", duration: 1000, startValue: 0, endValue: 1, onStep: "stepCornerShow", onEnd: "animationEnd", name: "showCornerAnimation"},
+		{kind: "enyo.Animator", duration: 1000, startValue: 0, endValue: 1, onStep: "stepCornerHide", onEnd: "animationEnd", name: "hideCornerAnimation"},
 		{kind: "enyo.Animator", duration: 1000, startValue: 0, endValue: 1, onStep: "stepCornerAll", onEnd: "animationEnd", name: "allCornerAnimation"},
 		{kind: "enyo.Animator", duration: 1000, startValue: 0, endValue: 100, onStep: "stepBarShow", onEnd: "animationEnd", name: "showBarAnimation"},
 		{kind: "enyo.Animator", duration: 1000, startValue: 0, endValue: 80, onStep: "stepBarHide", onEnd: "animationEnd", name: "hideBarAnimation"},
@@ -264,6 +265,18 @@ enyo.kind({
 	},
 	
 	/**
+	 * Handler for "onStep" event of hideCornerAnimation
+	 * @private
+	 */
+	stepCornerHide: function(inSender) {
+		var from = {x: -35, y: 0},
+			delta = {x: -115, y: -120};
+		
+		this.$.curl.applyStyle("right", from.x+delta.x*inSender.value+"px");
+		this.$.curl.applyStyle("top", from.y+delta.y*inSender.value+"px");
+	},
+	
+	/**
 	 * Handler for "onStep" event of allCornerAnimation
 	 * @private
 	 */
@@ -342,6 +355,10 @@ enyo.kind({
 		else if(inSender == this.$.showCornerAnimation) {
 			this.cornerVisible = true;
 		}
+		else if(inSender == this.$.hideCornerAnimation) {
+			this.cornerVisible = false;
+			this.barVisible = false;
+		}
 	},
 
 	/**
@@ -390,5 +407,51 @@ enyo.kind({
 	barCloseTap: function() {
 		this.$.allCornerAnimation.stop();
 		this.$.hideBarAnimation.play();
+	},
+	
+	/**
+	 * Remove a notification
+	 * @function
+	 * @name notification.PageCurl#removeNotification
+	 * @param {Int} The uid of the notification to remove
+	 */
+	removeNotification: function(uid) {
+		var notif = this.getNotificationFromUid(uid);
+
+		if(!notif.notification.stay) {
+			if(notif == this.inShow) {
+				this.hideNotification(true);
+			}
+		}
+		else {
+			notif.node.destroy();
+		}
+		enyo.remove(notif, this.pending);
+		
+		this.showCorner();
+		if(this.barVisible) {
+			if(this.getStayCount() == 0) this.barCloseTap();
+		}
+		else {
+			if(this.getStayCount() == 0 && this.cornerVisible) this.$.hideCornerAnimation.play();
+		}
+		
+	},
+	
+	/**
+	 * Return a notification by a its Uid
+	 * @function
+	 * @private
+	 * @returns A notification
+	 * @param {Int} uid The Uid of the notification
+	 * @name notification.PageCurl#getNotificationFromUid
+	 */
+	getNotificationFromUid: function(uid) {
+		var lap = 0,
+			total = this.pending.length;
+			
+		for(;lap<total;lap++) {
+			if(this.pending[lap].uid == uid) return this.pending[lap];
+		}
 	}
 });

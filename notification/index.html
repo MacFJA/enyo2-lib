@@ -2,13 +2,11 @@
 <html manifest="mobile.manifest">
 <head>
 	<title>Notification</title>
-	<script src="http://enyojs.com/enyo-2.0b5/enyo.js" type="text/javascript" charset="utf-8"></script>
+	<script src="http://enyojs.com/enyo-2.2.0/enyo.js" type="text/javascript" charset="utf-8"></script>
 	<script>
-		enyo.depends(
-			"http://enyojs.com/enyo-2.0b5/enyo.css",
-			"http://enyojs.com/lib/onyx/"
-		);
+		enyo.depends("http://enyojs.com/enyo-2.2.0/enyo.css");
  	</script>
+	<script src="http://enyojs.com/enyo-2.2.0/lib/onyx/package.js" type="text/javascript" charset="utf-8"></script>
 
 	<script src="NotificationTheme/package.js" type="text/javascript"></script>
 
@@ -50,6 +48,10 @@
 					{kind: "onyx.Button", content: "PageCurl, displayed 1 sec", ontap: "curl2"},
 					{kind: "onyx.Button", content: "PageCurl, no automatic hide", ontap: "curl3"}
 				]},
+				{content: "Actions", style: "padding: 20px 20px 0 20px"},
+				{kind: "onyx.Toolbar", components: [
+					{kind: "onyx.Button", content: "Remove all notifications", ontap: "action1"}
+				]},
 				{kind: "Notification", name: "notif"}
 			],
 
@@ -72,6 +74,8 @@
 			curl1: function() { this.sendNotif("notification.PageCurl"); },
 			curl2: function() { this.sendNotif("notification.PageCurl", undefined, 1); },
 			curl3: function() { this.sendNotif("notification.PageCurl", true); },
+			
+			action1: function() { this.$.notif.removeAllNotifications(); },
 
 			callb: function(notification) { alert("click!"); },
 
