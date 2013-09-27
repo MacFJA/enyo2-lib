@@ -10,7 +10,7 @@
  * @name notification.Bezel
  * @class
  * @author MacFJA
- * @version 1.1 (07/07/2012)
+ * @version 1.2 (27/09/2013)
  */
 enyo.kind({
 	name: "notification.Bezel",

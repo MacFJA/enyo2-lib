@@ -25,7 +25,7 @@
  * @name enyo.Notification
  * @class
  * @author MacFJA
- * @version 1.1 (30/06/2012)
+ * @version 1.2 (27/09/2013)
  */
 enyo.kind({
 	name: "enyo.Notification",
