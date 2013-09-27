@@ -100,17 +100,24 @@ enyo.kind({
 	 * @name enyo.Notification#sendNotification
 	 * @param {Object} notification The notification to send
 	 * @param {Function} [callback] The callBack function
+	 * @return The notification UID
 	 */
 	sendNotification: function(notification, callback) {
+		//Get the theme (or defaultTheme if no theme specified)
+		var theme = this.getTheme(notification.theme||this.defaultTheme);
+
 		this.pending.push({
+			theme: theme,
 			uid: this.uid,
 			notification: notification,
 			callback: (typeof(callback) != "function")?enyo.nop:callback,//if no callback function, use enyo.nop
 		});
-		//Get the theme (or defaultTheme if no theme specified) and send the notification
-		this.getTheme(notification.theme||this.defaultTheme).newNotification(notification, this.uid);
+
+		theme.newNotification(notification, this.uid);//Send the notification
 		this.doNotify(notification);//Send a event to inform about this new notification
 		this.uid++;//Increment uid of notification
+
+		return this.uid-1;
 	},
 
 	/**
@@ -167,5 +174,54 @@ enyo.kind({
 				return;//Exit the function
 			}
 		}
+	},
+	
+	/**
+	 * Remove all pending noification
+	 * @function
+	 * @name enyo.Notification#removeAlls
+	 * @param {Boolean} onlyStay Indicate if only <tt>stau</tt> notification sould be removed
+	 */
+	removeAlls: function(onlyStay) {
+		for(var tour=this.pending.length-1;tour>=0;tour--) {
+			if(!onlyStay || onlyStay && this.pending[tour].notification.stay) {
+				this.removeNotification(this.pending[tour].uid)
+			}
+		}
+	},
+	
+	/**
+	 * Remove a particular notification
+	 * @function
+	 * @name enyo.Notification#removeNotification
+	 * @param {Int} uid The Uid of the notification
+	 */
+	removeNotification: function(uid) {
+		//Search the notification by its uid
+		for(var tour=0,size=this.pending.length;tour<size;tour++) {
+			if(this.pending[tour].uid == uid) {
+				this.pending[tour].theme.removeNotification(this.pending[tour].uid);
+				enyo.remove(this.pending[tour], this.pending);//Remove the pending notification
+				return;//Exit the function
+			}
+		}
+	},
+	
+	/**
+	 * Return an associative array of all pending notification<br />
+	 * Key = Uid<br />
+	 * Value = Notification<br />
+	 * @function
+	 * @name enyo.Notification.getPendingNotification
+	 * @return Array of notification
+	 */
+	getPendingNotification: function() {
+		var result = {};
+		
+		for(var tour=0,size=this.pending.length;tour<size;tour) {
+			result[this.pending[tour].uid] = this.pending[tour].notification;
+		}
+
+		return result;
 	}
 });

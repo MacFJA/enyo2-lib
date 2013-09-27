@@ -282,5 +282,36 @@ enyo.kind({
 				);
 			}
 		}
+	},
+	
+	/**
+	 * Remove a notification
+	 * @function
+	 * @name notification.MessageBar#removeNotification
+	 * @param {Int} The uid of the notification to remove
+	 */
+	removeNotification: function(uid) {
+		if(uid == this.pending[0].uid) {
+			this.hideNotification(true);
+		}
+		
+		enyo.remove(this.getNotificationFromUid(uid), this.pending);
+	},
+	
+	/**
+	 * Return a notification by a its Uid
+	 * @function
+	 * @private
+	 * @returns A notification
+	 * @param {Int} uid The Uid of the notification
+	 * @name notification.MessageBar#getNotificationFromUid
+	 */
+	getNotificationFromUid: function(uid) {
+		var lap = 0,
+			total = this.pending.length;
+			
+		for(;lap<total;lap++) {
+			if(this.pending[lap].uid == uid) return this.pending[lap];
+		}
 	}
 });

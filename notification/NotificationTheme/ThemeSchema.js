@@ -20,5 +20,12 @@ enyo.kind({
 			is send in "onClose" and "onTap" event :
 			this.doTap({"notification": notification, "uid": uid});
 		*/
+	},
+	
+	removeNotification: function(uid) {
+		/*
+			The notification with the uid "uid" request the theme to
+			close it.
+		*/
 	}
 });
