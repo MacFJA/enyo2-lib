@@ -182,7 +182,7 @@ enyo.kind({
 	 * @name enyo.Notification#removeAlls
 	 * @param {Boolean} onlyStay Indicate if only <tt>stau</tt> notification sould be removed
 	 */
-	removeAlls: function(onlyStay) {
+	removeAllNotifications: function(onlyStay) {
 		for(var tour=this.pending.length-1;tour>=0;tour--) {
 			if(!onlyStay || onlyStay && this.pending[tour].notification.stay) {
 				this.removeNotification(this.pending[tour].uid)
